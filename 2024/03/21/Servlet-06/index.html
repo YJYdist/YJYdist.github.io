@@ -1,0 +1,733 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN" data-default-color-scheme=auto>
+
+
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/fluid.png">
+  <link rel="icon" href="/img/fluid.png">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="author" content="YJYdist">
+  <meta name="keywords" content="">
+  
+    <meta name="description" content="Servlet学习笔记_06_ServletConfig和ServletContext1. ServletConfig的使用 ServletConfig是什么   为Servlet提供初始配置参数的一种对象，每个Servlet都有自己独立唯一的ServletConfig对象 容器回味每个Servlet实例化一个ServletConfig对象，并通过Servlet生命周期的init方法传入给Serv">
+<meta property="og:type" content="article">
+<meta property="og:title" content="YJYdist&#39;s BLOG">
+<meta property="og:url" content="http://example.com/2024/03/21/Servlet-06/index.html">
+<meta property="og:site_name" content="YJYdist&#39;s BLOG">
+<meta property="og:description" content="Servlet学习笔记_06_ServletConfig和ServletContext1. ServletConfig的使用 ServletConfig是什么   为Servlet提供初始配置参数的一种对象，每个Servlet都有自己独立唯一的ServletConfig对象 容器回味每个Servlet实例化一个ServletConfig对象，并通过Servlet生命周期的init方法传入给Serv">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="http://example.com/2024/03/21/Servlet-06/Servlet_06_01.png">
+<meta property="og:image" content="http://example.com/2024/03/21/Servlet-06/Servlet_06_02.png">
+<meta property="article:published_time" content="2024-03-21T11:11:08.755Z">
+<meta property="article:modified_time" content="2024-03-21T11:15:42.482Z">
+<meta property="article:author" content="YJYdist">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="http://example.com/2024/03/21/Servlet-06/Servlet_06_01.png">
+  
+  
+  
+  <title>YJYdist&#39;s BLOG</title>
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
+
+
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/github-markdown-css/4.0.0/github-markdown.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/hint.css/2.7.0/hint.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+<!-- Do not modify the link that theme dependent icons -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1749284_hj8rtnfg7um.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_lbnruvf0jn.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+
+  <link id="highlight-css" rel="stylesheet" href="/css/highlight.css" />
+  
+    <link id="highlight-css-dark" rel="stylesheet" href="/css/highlight-dark.css" />
+  
+
+
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    Fluid.ctx = Object.assign({}, Fluid.ctx)
+    var CONFIG = {"hostname":"example.com","root":"/","version":"1.9.7","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":false,"follow_dnt":true,"baidu":null,"google":{"measurement_id":null},"tencent":{"sid":null,"cid":null},"woyaola":null,"cnzz":null,"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false}},"search_path":"/local-search.xml","include_content_in_search":true};
+
+    if (CONFIG.web_analytics.follow_dnt) {
+      var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
+      Fluid.ctx.dnt = dntVal && (dntVal.startsWith('1') || dntVal.startsWith('yes') || dntVal.startsWith('on'));
+    }
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+  
+
+
+  
+<meta name="generator" content="Hexo 7.1.1"></head>
+
+
+<body>
+  
+
+  <header>
+    
+
+<div class="header-inner" style="height: 70vh;">
+  <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong>YJYdist&#39;s BLOG</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/" target="_self">
+                <i class="iconfont icon-home-fill"></i>
+                <span>首页</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/" target="_self">
+                <i class="iconfont icon-archive-fill"></i>
+                <span>归档</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/" target="_self">
+                <i class="iconfont icon-category-fill"></i>
+                <span>分类</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/" target="_self">
+                <i class="iconfont icon-tags-fill"></i>
+                <span>标签</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/" target="_self">
+                <i class="iconfont icon-user-fill"></i>
+                <span>关于</span>
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              <i class="iconfont icon-search"></i>
+            </a>
+          </li>
+          
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">
+              <i class="iconfont icon-dark" id="color-toggle-icon"></i>
+            </a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+  
+
+<div id="banner" class="banner" parallax=true
+     style="background: url('/img/default.png') no-repeat center center; background-size: cover;">
+  <div class="full-bg-img">
+    <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+      <div class="banner-text text-center fade-in-up">
+        <div class="h2">
+          
+            <span id="subtitle" data-typed-text=""></span>
+          
+        </div>
+
+        
+          
+  <div class="mt-3">
+    
+    
+      <span class="post-meta">
+        <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+        <time datetime="2024-03-21 19:11" pubdate>
+          2024年3月21日 晚上
+        </time>
+      </span>
+    
+  </div>
+
+  <div class="mt-1">
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-chart"></i>
+        
+          1.4k 字
+        
+      </span>
+    
+
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-clock-fill"></i>
+        
+        
+        
+          12 分钟
+        
+      </span>
+    
+
+    
+    
+  </div>
+
+
+        
+      </div>
+
+      
+    </div>
+  </div>
+</div>
+
+</div>
+
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+
+    </div>
+
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div id="board">
+          <article class="post-content mx-auto">
+            <h1 id="seo-header"></h1>
+            
+            
+              <div class="markdown-body">
+                
+                <h1 id="Servlet学习笔记-06-ServletConfig和ServletContext"><a href="#Servlet学习笔记-06-ServletConfig和ServletContext" class="headerlink" title="Servlet学习笔记_06_ServletConfig和ServletContext"></a>Servlet学习笔记_06_ServletConfig和ServletContext</h1><h2 id="1-ServletConfig的使用"><a href="#1-ServletConfig的使用" class="headerlink" title="1. ServletConfig的使用"></a>1. ServletConfig的使用</h2><blockquote>
+<p>ServletConfig是什么</p>
+</blockquote>
+<ul>
+<li>为Servlet提供初始配置参数的一种对象，每个Servlet都有自己独立唯一的ServletConfig对象</li>
+<li>容器回味每个Servlet实例化一个ServletConfig对象，并通过Servlet生命周期的init方法传入给Servlet作为属性</li>
+</ul>
+<p><img src="/2024/03/21/Servlet-06/Servlet_06_01.png" srcset="/img/loading.gif" lazyload></p>
+<blockquote>
+<p>ServletConfig是一个接口，源码如下：</p>
+</blockquote>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-keyword">package</span> jakarta.servlet;<br><span class="hljs-keyword">import</span> java.util.Enumeration;<br><span class="hljs-keyword">public</span> <span class="hljs-keyword">interface</span> <span class="hljs-title class_">ServletConfig</span> &#123;<br>    String <span class="hljs-title function_">getServletName</span><span class="hljs-params">()</span>;<br>    ServletContext <span class="hljs-title function_">getServletContext</span><span class="hljs-params">()</span>;<br>    String <span class="hljs-title function_">getInitParameter</span><span class="hljs-params">(String var1)</span>;<br>    Enumeration&lt;String&gt; <span class="hljs-title function_">getInitParameterNames</span><span class="hljs-params">()</span>;<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<table>
+<thead>
+<tr>
+<th>方法名</th>
+<th>作用</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>getServletName()</td>
+<td>获取&lt;servlet-name&gt;HelloServlet&lt;&#x2F;servlet-name&gt;定义的Servlet名称</td>
+</tr>
+<tr>
+<td>getServletContext()</td>
+<td>获取ServletContext对象</td>
+</tr>
+<tr>
+<td>getInitParameter()</td>
+<td>获取配置Servlet时设置的『初始化参数』，根据名字获取值</td>
+</tr>
+<tr>
+<td>getInitParameterNames()</td>
+<td>获取所有初始化参数名组成的Enumeration对象</td>
+</tr>
+</tbody></table>
+<blockquote>
+<p>ServletConfig怎么用,测试(demo)代码如下</p>
+</blockquote>
+<ul>
+<li>定义Servlet</li>
+</ul>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-keyword">public</span> <span class="hljs-keyword">class</span> <span class="hljs-title class_">ServletA</span> <span class="hljs-keyword">extends</span> <span class="hljs-title class_">HttpServlet</span> &#123;<br>    <span class="hljs-meta">@Override</span><br>    <span class="hljs-keyword">protected</span> <span class="hljs-keyword">void</span> <span class="hljs-title function_">service</span><span class="hljs-params">(HttpServletRequest req, HttpServletResponse resp)</span> <span class="hljs-keyword">throws</span> ServletException, IOException &#123;<br>        <span class="hljs-type">ServletConfig</span> <span class="hljs-variable">servletConfig</span> <span class="hljs-operator">=</span> <span class="hljs-built_in">this</span>.getServletConfig();<br>        <span class="hljs-comment">// 根据参数名获取单个参数</span><br>        <span class="hljs-type">String</span> <span class="hljs-variable">value</span> <span class="hljs-operator">=</span> servletConfig.getInitParameter(<span class="hljs-string">&quot;param1&quot;</span>);<br>        System.out.println(<span class="hljs-string">&quot;param1:&quot;</span>+value);<br>        <span class="hljs-comment">// 获取所有参数名</span><br>        Enumeration&lt;String&gt; parameterNames = servletConfig.getInitParameterNames();<br>        <span class="hljs-comment">// 迭代并获取参数名</span><br>        <span class="hljs-keyword">while</span> (parameterNames.hasMoreElements()) &#123;<br>            <span class="hljs-type">String</span> <span class="hljs-variable">paramaterName</span> <span class="hljs-operator">=</span> parameterNames.nextElement();<br>            System.out.println(paramaterName+<span class="hljs-string">&quot;:&quot;</span>+servletConfig.getInitParameter(paramaterName));<br>        &#125;<br>    &#125;<br>&#125;<br><br><br><br><span class="hljs-keyword">public</span> <span class="hljs-keyword">class</span> <span class="hljs-title class_">ServletB</span> <span class="hljs-keyword">extends</span> <span class="hljs-title class_">HttpServlet</span> &#123;<br>    <span class="hljs-meta">@Override</span><br>    <span class="hljs-keyword">protected</span> <span class="hljs-keyword">void</span> <span class="hljs-title function_">service</span><span class="hljs-params">(HttpServletRequest req, HttpServletResponse resp)</span> <span class="hljs-keyword">throws</span> ServletException, IOException &#123;<br>        <span class="hljs-type">ServletConfig</span> <span class="hljs-variable">servletConfig</span> <span class="hljs-operator">=</span> <span class="hljs-built_in">this</span>.getServletConfig();<br>        <span class="hljs-comment">// 根据参数名获取单个参数</span><br>        <span class="hljs-type">String</span> <span class="hljs-variable">value</span> <span class="hljs-operator">=</span> servletConfig.getInitParameter(<span class="hljs-string">&quot;param1&quot;</span>);<br>        System.out.println(<span class="hljs-string">&quot;param1:&quot;</span>+value);<br>        <span class="hljs-comment">// 获取所有参数名</span><br>        Enumeration&lt;String&gt; parameterNames = servletConfig.getInitParameterNames();<br>        <span class="hljs-comment">// 迭代并获取参数名</span><br>        <span class="hljs-keyword">while</span> (parameterNames.hasMoreElements()) &#123;<br>            <span class="hljs-type">String</span> <span class="hljs-variable">paramaterName</span> <span class="hljs-operator">=</span> parameterNames.nextElement();<br>            System.out.println(paramaterName+<span class="hljs-string">&quot;:&quot;</span>+servletConfig.getInitParameter(paramaterName));<br>        &#125;<br>    &#125;<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<ul>
+<li>配置Servlet</li>
+</ul>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br></pre></td><td class="code"><pre><code class="hljs xml"><span class="hljs-tag">&lt;<span class="hljs-name">servlet</span>&gt;</span><br>      <span class="hljs-tag">&lt;<span class="hljs-name">servlet-name</span>&gt;</span>ServletA<span class="hljs-tag">&lt;/<span class="hljs-name">servlet-name</span>&gt;</span><br>      <span class="hljs-tag">&lt;<span class="hljs-name">servlet-class</span>&gt;</span>com.atguigu.servlet.ServletA<span class="hljs-tag">&lt;/<span class="hljs-name">servlet-class</span>&gt;</span><br>      <span class="hljs-comment">&lt;!--配置ServletA的初始参数--&gt;</span><br>      <span class="hljs-tag">&lt;<span class="hljs-name">init-param</span>&gt;</span><br>          <span class="hljs-tag">&lt;<span class="hljs-name">param-name</span>&gt;</span>param1<span class="hljs-tag">&lt;/<span class="hljs-name">param-name</span>&gt;</span><br>          <span class="hljs-tag">&lt;<span class="hljs-name">param-value</span>&gt;</span>value1<span class="hljs-tag">&lt;/<span class="hljs-name">param-value</span>&gt;</span><br>      <span class="hljs-tag">&lt;/<span class="hljs-name">init-param</span>&gt;</span><br>      <span class="hljs-tag">&lt;<span class="hljs-name">init-param</span>&gt;</span><br>          <span class="hljs-tag">&lt;<span class="hljs-name">param-name</span>&gt;</span>param2<span class="hljs-tag">&lt;/<span class="hljs-name">param-name</span>&gt;</span><br>          <span class="hljs-tag">&lt;<span class="hljs-name">param-value</span>&gt;</span>value2<span class="hljs-tag">&lt;/<span class="hljs-name">param-value</span>&gt;</span><br>      <span class="hljs-tag">&lt;/<span class="hljs-name">init-param</span>&gt;</span><br>  <span class="hljs-tag">&lt;/<span class="hljs-name">servlet</span>&gt;</span><br><br>   <span class="hljs-tag">&lt;<span class="hljs-name">servlet</span>&gt;</span><br>       <span class="hljs-tag">&lt;<span class="hljs-name">servlet-name</span>&gt;</span>ServletB<span class="hljs-tag">&lt;/<span class="hljs-name">servlet-name</span>&gt;</span><br>       <span class="hljs-tag">&lt;<span class="hljs-name">servlet-class</span>&gt;</span>com.atguigu.servlet.ServletB<span class="hljs-tag">&lt;/<span class="hljs-name">servlet-class</span>&gt;</span><br>       <span class="hljs-comment">&lt;!--配置ServletB的初始参数--&gt;</span><br>       <span class="hljs-tag">&lt;<span class="hljs-name">init-param</span>&gt;</span><br>           <span class="hljs-tag">&lt;<span class="hljs-name">param-name</span>&gt;</span>param3<span class="hljs-tag">&lt;/<span class="hljs-name">param-name</span>&gt;</span><br>           <span class="hljs-tag">&lt;<span class="hljs-name">param-value</span>&gt;</span>value3<span class="hljs-tag">&lt;/<span class="hljs-name">param-value</span>&gt;</span><br>       <span class="hljs-tag">&lt;/<span class="hljs-name">init-param</span>&gt;</span><br>       <span class="hljs-tag">&lt;<span class="hljs-name">init-param</span>&gt;</span><br>           <span class="hljs-tag">&lt;<span class="hljs-name">param-name</span>&gt;</span>param4<span class="hljs-tag">&lt;/<span class="hljs-name">param-name</span>&gt;</span><br>           <span class="hljs-tag">&lt;<span class="hljs-name">param-value</span>&gt;</span>value4<span class="hljs-tag">&lt;/<span class="hljs-name">param-value</span>&gt;</span><br>       <span class="hljs-tag">&lt;/<span class="hljs-name">init-param</span>&gt;</span><br>   <span class="hljs-tag">&lt;/<span class="hljs-name">servlet</span>&gt;</span><br><br>   <span class="hljs-tag">&lt;<span class="hljs-name">servlet-mapping</span>&gt;</span><br>       <span class="hljs-tag">&lt;<span class="hljs-name">servlet-name</span>&gt;</span>ServletA<span class="hljs-tag">&lt;/<span class="hljs-name">servlet-name</span>&gt;</span><br>       <span class="hljs-tag">&lt;<span class="hljs-name">url-pattern</span>&gt;</span>/servletA<span class="hljs-tag">&lt;/<span class="hljs-name">url-pattern</span>&gt;</span><br>   <span class="hljs-tag">&lt;/<span class="hljs-name">servlet-mapping</span>&gt;</span><br><br>   <span class="hljs-tag">&lt;<span class="hljs-name">servlet-mapping</span>&gt;</span><br>       <span class="hljs-tag">&lt;<span class="hljs-name">servlet-name</span>&gt;</span>ServletB<span class="hljs-tag">&lt;/<span class="hljs-name">servlet-name</span>&gt;</span><br>       <span class="hljs-tag">&lt;<span class="hljs-name">url-pattern</span>&gt;</span>/servletB<span class="hljs-tag">&lt;/<span class="hljs-name">url-pattern</span>&gt;</span><br>   <span class="hljs-tag">&lt;/<span class="hljs-name">servlet-mapping</span>&gt;</span><br></code></pre></td></tr></table></figure>
+
+<ul>
+<li>请求Servlet测试</li>
+</ul>
+<p>… … … … … … … :beer:自己动手:beer:</p>
+<h2 id="2-ServletContext的使用"><a href="#2-ServletContext的使用" class="headerlink" title="2. ServletContext的使用"></a>2. ServletContext的使用</h2><blockquote>
+<p>ServletContext是什么</p>
+</blockquote>
+<ul>
+<li>ServletContext对象可以称呼为上下文对象,或者叫应用域对象(<u>后面统一讲解域对象</u>)</li>
+<li>容器会为每个app创建一个独立的<strong>唯一</strong>的ServletContext对象</li>
+<li>ServletContext对象为所有的Servlet所共享</li>
+<li>ServletContext可以为所有的Servlet提供初始配置参数</li>
+</ul>
+<p><img src="/2024/03/21/Servlet-06/Servlet_06_02.png" srcset="/img/loading.gif" lazyload></p>
+<blockquote>
+<p>ServletContext怎么用</p>
+</blockquote>
+<ul>
+<li>配置ServletContext参数（param）</li>
+</ul>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><code class="hljs xml"><span class="hljs-meta">&lt;?xml version=<span class="hljs-string">&quot;1.0&quot;</span> encoding=<span class="hljs-string">&quot;UTF-8&quot;</span>?&gt;</span><br><span class="hljs-tag">&lt;<span class="hljs-name">web-app</span> <span class="hljs-attr">xmlns</span>=<span class="hljs-string">&quot;https://jakarta.ee/xml/ns/jakartaee&quot;</span></span><br><span class="hljs-tag">         <span class="hljs-attr">xmlns:xsi</span>=<span class="hljs-string">&quot;http://www.w3.org/2001/XMLSchema-instance&quot;</span></span><br><span class="hljs-tag">         <span class="hljs-attr">xsi:schemaLocation</span>=<span class="hljs-string">&quot;https://jakarta.ee/xml/ns/jakartaee https://jakarta.ee/xml/ns/jakartaee/web-app_5_0.xsd&quot;</span></span><br><span class="hljs-tag">         <span class="hljs-attr">version</span>=<span class="hljs-string">&quot;5.0&quot;</span>&gt;</span><br><br>    <span class="hljs-tag">&lt;<span class="hljs-name">context-param</span>&gt;</span><br>        <span class="hljs-tag">&lt;<span class="hljs-name">param-name</span>&gt;</span>paramA<span class="hljs-tag">&lt;/<span class="hljs-name">param-name</span>&gt;</span><br>        <span class="hljs-tag">&lt;<span class="hljs-name">param-value</span>&gt;</span>valueA<span class="hljs-tag">&lt;/<span class="hljs-name">param-value</span>&gt;</span><br>    <span class="hljs-tag">&lt;/<span class="hljs-name">context-param</span>&gt;</span><br>    <span class="hljs-tag">&lt;<span class="hljs-name">context-param</span>&gt;</span><br>        <span class="hljs-tag">&lt;<span class="hljs-name">param-name</span>&gt;</span>paramB<span class="hljs-tag">&lt;/<span class="hljs-name">param-name</span>&gt;</span><br>        <span class="hljs-tag">&lt;<span class="hljs-name">param-value</span>&gt;</span>valueB<span class="hljs-tag">&lt;/<span class="hljs-name">param-value</span>&gt;</span><br>    <span class="hljs-tag">&lt;/<span class="hljs-name">context-param</span>&gt;</span><br><span class="hljs-tag">&lt;/<span class="hljs-name">web-app</span>&gt;</span><br></code></pre></td></tr></table></figure>
+
+<ul>
+<li>在Servlet中获取ServletContext并获取参数</li>
+</ul>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-keyword">package</span> com.atguigu.servlet;<br><br><span class="hljs-keyword">import</span> jakarta.servlet.ServletConfig;<br><span class="hljs-keyword">import</span> jakarta.servlet.ServletContext;<br><span class="hljs-keyword">import</span> jakarta.servlet.ServletException;<br><span class="hljs-keyword">import</span> jakarta.servlet.http.HttpServlet;<br><span class="hljs-keyword">import</span> jakarta.servlet.http.HttpServletRequest;<br><span class="hljs-keyword">import</span> jakarta.servlet.http.HttpServletResponse;<br><br><span class="hljs-keyword">import</span> java.io.IOException;<br><span class="hljs-keyword">import</span> java.util.Enumeration;<br><br><span class="hljs-keyword">public</span> <span class="hljs-keyword">class</span> <span class="hljs-title class_">ServletA</span> <span class="hljs-keyword">extends</span> <span class="hljs-title class_">HttpServlet</span> &#123;<br>    <span class="hljs-meta">@Override</span><br>    <span class="hljs-keyword">protected</span> <span class="hljs-keyword">void</span> <span class="hljs-title function_">service</span><span class="hljs-params">(HttpServletRequest req, HttpServletResponse resp)</span> <span class="hljs-keyword">throws</span> ServletException, IOException &#123;<br>       <br>        <span class="hljs-comment">// 从ServletContext中获取为所有的Servlet准备的参数</span><br>        <span class="hljs-type">ServletContext</span> <span class="hljs-variable">servletContext</span> <span class="hljs-operator">=</span> <span class="hljs-built_in">this</span>.getServletContext();<br>        <span class="hljs-type">String</span> <span class="hljs-variable">valueA</span> <span class="hljs-operator">=</span> servletContext.getInitParameter(<span class="hljs-string">&quot;paramA&quot;</span>);<br>        System.out.println(<span class="hljs-string">&quot;paramA:&quot;</span>+valueA);<br>        <span class="hljs-comment">// 获取所有参数名</span><br>        Enumeration&lt;String&gt; initParameterNames = servletContext.getInitParameterNames();<br>        <span class="hljs-comment">// 迭代并获取参数名</span><br>        <span class="hljs-keyword">while</span> (initParameterNames.hasMoreElements()) &#123;<br>            <span class="hljs-type">String</span> <span class="hljs-variable">paramaterName</span> <span class="hljs-operator">=</span> initParameterNames.nextElement();<br>            System.out.println(paramaterName+<span class="hljs-string">&quot;:&quot;</span>+servletContext.getInitParameter(paramaterName));<br>        &#125;<br>    &#125;<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<h2 id="3-ServletContext其他重要API"><a href="#3-ServletContext其他重要API" class="headerlink" title="3. ServletContext其他重要API"></a>3. ServletContext其他重要API</h2><blockquote>
+<p>获取资源的真实路径</p>
+</blockquote>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-type">String</span> <span class="hljs-variable">realPath</span>  <span class="hljs-operator">=</span> servletContext.getRealPath(<span class="hljs-string">&quot;资源在***WEB目录***中的路径&quot;</span>)<br></code></pre></td></tr></table></figure>
+
+<ul>
+<li>例如我们的目标是需要获取项目中某个静态资源的路径，不是工程目录中的路径，而是<strong>部署目录中的路径</strong>；我们如果直接拷贝其在我们电脑中的完整路径的话其实是有问题的，因为如果该项目以后部署到公司服务器上的话，路径肯定是会发生改变的，所以我们需要使用代码动态获取资源的真实路径.  只要使用了servletContext动态获取资源的真实路径，<strong>那么无论项目的部署路径发生什么变化，都会动态获取项目运行时候的实际路径</strong>，所以就不会发生由于写死真实路径而导致项目部署位置改变引发的路径错误问题</li>
+</ul>
+<blockquote>
+<p>获取项目的上下文路径</p>
+</blockquote>
+<ul>
+<li>项目的部署名称,也叫项目的上下文路径,在部署进入tomcat时所使用的路径,该路径是可能发生变化的,通过该API动态获取项目真实的上下文路径,可以<strong>帮助我们解决一些后端页面渲染技术或者请求转发和响应重定向中的路径问题</strong></li>
+</ul>
+<blockquote>
+<p> 域对象的相关API</p>
+</blockquote>
+<ul>
+<li>域对象: 一些用于存储数据和传递数据的对象,传递数据不同的范围,我们称之为不同的域,不同的域对象代表不同的域,共享数据的范围也不同</li>
+<li>ServletContext代表应用,所以ServletContext域也叫作应用域,是webapp中最大的域,可以在本应用内实现数据的共享和传递</li>
+<li>webapp中的三大域对象,分别是应用域,会话域,请求域</li>
+<li><code>后续会有三大域对象统一的讲解和演示</code>,三大域对象都具有的API如下</li>
+</ul>
+<table>
+<thead>
+<tr>
+<th>API</th>
+<th>功能解释</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>void setAttribute(String key,Object value);</td>
+<td>向域中存储&#x2F;修改数据</td>
+</tr>
+<tr>
+<td>Object getAttribute(String key);</td>
+<td>获得域中的数据</td>
+</tr>
+<tr>
+<td>void removeAttribute(String key);</td>
+<td>移除域中的数据</td>
+</tr>
+</tbody></table>
+
+                
+              </div>
+            
+            <hr/>
+            <div>
+              <div class="post-metas my-3">
+  
+  
+</div>
+
+
+              
+  
+
+  <div class="license-box my-3">
+    <div class="license-title">
+      <div></div>
+      <div>http://example.com/2024/03/21/Servlet-06/</div>
+    </div>
+    <div class="license-meta">
+      
+        <div class="license-meta-item">
+          <div>作者</div>
+          <div>YJYdist</div>
+        </div>
+      
+      
+        <div class="license-meta-item license-meta-date">
+          <div>发布于</div>
+          <div>2024年3月21日</div>
+        </div>
+      
+      
+      
+        <div class="license-meta-item">
+          <div>许可协议</div>
+          <div>
+            
+              
+              
+                <a class="print-no-link" target="_blank" href="https://creativecommons.org/licenses/by/4.0/">
+                  <span class="hint--top hint--rounded" aria-label="BY - 署名">
+                    <i class="iconfont icon-by"></i>
+                  </span>
+                </a>
+              
+            
+          </div>
+        </div>
+      
+    </div>
+    <div class="license-icon iconfont"></div>
+  </div>
+
+
+
+              
+                <div class="post-prevnext my-3">
+                  <article class="post-prev col-6">
+                    
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/2024/03/21/Servlet-04/" title="">
+                        <span class="hidden-mobile"></span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+          </article>
+        </div>
+      </div>
+    </div>
+
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+  <aside class="sidebar" style="margin-left: -1rem">
+    <div id="toc">
+  <p class="toc-header">
+    <i class="iconfont icon-list"></i>
+    <span>目录</span>
+  </p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+
+
+  </aside>
+
+
+    </div>
+  </div>
+</div>
+
+
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+
+
+
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v" for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    
+
+    
+  </main>
+
+  <footer>
+    <div class="footer-inner">
+  
+    <div class="footer-content">
+       <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a> <i class="iconfont icon-love"></i> <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Fluid</span></a> 
+    </div>
+  
+  
+  
+  
+</div>
+
+  </footer>
+
+  <!-- Scripts -->
+  
+  <script  src="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://lib.baomitu.com/jquery/3.6.4/jquery.min.js" ></script>
+<script  src="https://lib.baomitu.com/twitter-bootstrap/4.6.1/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+
+  <script  src="https://lib.baomitu.com/typed.js/2.0.12/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var subtitle = document.getElementById('subtitle');
+      if (!subtitle || !typing) {
+        return;
+      }
+      var text = subtitle.getAttribute('data-typed-text');
+      
+        typing(text);
+      
+    })(window, document);
+  </script>
+
+
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/tocbot/4.20.1/tocbot.min.js', function() {
+    var toc = jQuery('#toc');
+    if (toc.length === 0 || !window.tocbot) { return; }
+    var boardCtn = jQuery('#board-ctn');
+    var boardTop = boardCtn.offset().top;
+
+    window.tocbot.init(Object.assign({
+      tocSelector     : '#toc-body',
+      contentSelector : '.markdown-body',
+      linkClass       : 'tocbot-link',
+      activeLinkClass : 'tocbot-active-link',
+      listClass       : 'tocbot-list',
+      isCollapsedClass: 'tocbot-is-collapsed',
+      collapsibleClass: 'tocbot-is-collapsible',
+      scrollSmooth    : true,
+      includeTitleTags: true,
+      headingsOffset  : -boardTop,
+    }, CONFIG.toc));
+    if (toc.find('.toc-list-item').length > 0) {
+      toc.css('visibility', 'visible');
+    }
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('tocbot' in window) {
+        tocbot.refresh();
+        var toc = jQuery('#toc');
+        if (toc.length === 0 || !tocbot) {
+          return;
+        }
+        if (toc.find('.toc-list-item').length > 0) {
+          toc.css('visibility', 'visible');
+        }
+      }
+    });
+  });
+</script>
+
+
+  <script src=https://lib.baomitu.com/clipboard.js/2.0.11/clipboard.min.js></script>
+
+  <script>Fluid.plugins.codeWidget();</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/anchor-js/4.3.1/anchor.min.js', function() {
+    window.anchors.options = {
+      placement: CONFIG.anchorjs.placement,
+      visible  : CONFIG.anchorjs.visible
+    };
+    if (CONFIG.anchorjs.icon) {
+      window.anchors.options.icon = CONFIG.anchorjs.icon;
+    }
+    var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+    var res = [];
+    for (var item of el) {
+      res.push('.markdown-body > ' + item.trim());
+    }
+    if (CONFIG.anchorjs.placement === 'left') {
+      window.anchors.options.class = 'anchorjs-link-left';
+    }
+    window.anchors.add(res.join(', '));
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('anchors' in window) {
+        anchors.removeAll();
+        var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+        var res = [];
+        for (var item of el) {
+          res.push('.markdown-body > ' + item.trim());
+        }
+        if (CONFIG.anchorjs.placement === 'left') {
+          anchors.options.class = 'anchorjs-link-left';
+        }
+        anchors.add(res.join(', '));
+      }
+    });
+  });
+</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.js', function() {
+    Fluid.plugins.fancyBox();
+  });
+</script>
+
+
+  <script>Fluid.plugins.imageCaption();</script>
+
+  <script  src="/js/local-search.js" ></script>
+
+
+
+
+
+<!-- 主题的启动项，将它保持在最底部 -->
+<!-- the boot of the theme, keep it at the bottom -->
+<script  src="/js/boot.js" ></script>
+
+
+  
+
+  <noscript>
+    <div class="noscript-warning">博客在允许 JavaScript 运行的环境下浏览效果更佳</div>
+  </noscript>
+</body>
+</html>

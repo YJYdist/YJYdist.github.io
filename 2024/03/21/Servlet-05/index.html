@@ -1,0 +1,773 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN" data-default-color-scheme=auto>
+
+
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/fluid.png">
+  <link rel="icon" href="/img/fluid.png">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="author" content="YJYdist">
+  <meta name="keywords" content="">
+  
+    <meta name="description" content="Servlet学习笔记_05_Servlet继承结构1. Servlet结口 Servlet接口源码  1234567891011public interface Servlet &#123;    void init(ServletConfig var1) throws ServletException;     ServletConfig getServletConfig();     voi">
+<meta property="og:type" content="article">
+<meta property="og:title" content="YJYdist&#39;s BLOG">
+<meta property="og:url" content="http://example.com/2024/03/21/Servlet-05/index.html">
+<meta property="og:site_name" content="YJYdist&#39;s BLOG">
+<meta property="og:description" content="Servlet学习笔记_05_Servlet继承结构1. Servlet结口 Servlet接口源码  1234567891011public interface Servlet &#123;    void init(ServletConfig var1) throws ServletException;     ServletConfig getServletConfig();     voi">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="http://example.com/2024/03/21/Servlet-05/Servlet_05_01.png">
+<meta property="article:published_time" content="2024-03-21T11:11:08.754Z">
+<meta property="article:modified_time" content="2024-03-21T11:15:12.038Z">
+<meta property="article:author" content="YJYdist">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="http://example.com/2024/03/21/Servlet-05/Servlet_05_01.png">
+  
+  
+  
+  <title>YJYdist&#39;s BLOG</title>
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
+
+
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/github-markdown-css/4.0.0/github-markdown.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/hint.css/2.7.0/hint.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+<!-- Do not modify the link that theme dependent icons -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1749284_hj8rtnfg7um.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_lbnruvf0jn.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+
+  <link id="highlight-css" rel="stylesheet" href="/css/highlight.css" />
+  
+    <link id="highlight-css-dark" rel="stylesheet" href="/css/highlight-dark.css" />
+  
+
+
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    Fluid.ctx = Object.assign({}, Fluid.ctx)
+    var CONFIG = {"hostname":"example.com","root":"/","version":"1.9.7","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":false,"follow_dnt":true,"baidu":null,"google":{"measurement_id":null},"tencent":{"sid":null,"cid":null},"woyaola":null,"cnzz":null,"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false}},"search_path":"/local-search.xml","include_content_in_search":true};
+
+    if (CONFIG.web_analytics.follow_dnt) {
+      var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
+      Fluid.ctx.dnt = dntVal && (dntVal.startsWith('1') || dntVal.startsWith('yes') || dntVal.startsWith('on'));
+    }
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+  
+
+
+  
+<meta name="generator" content="Hexo 7.1.1"></head>
+
+
+<body>
+  
+
+  <header>
+    
+
+<div class="header-inner" style="height: 70vh;">
+  <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong>YJYdist&#39;s BLOG</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/" target="_self">
+                <i class="iconfont icon-home-fill"></i>
+                <span>首页</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/" target="_self">
+                <i class="iconfont icon-archive-fill"></i>
+                <span>归档</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/" target="_self">
+                <i class="iconfont icon-category-fill"></i>
+                <span>分类</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/" target="_self">
+                <i class="iconfont icon-tags-fill"></i>
+                <span>标签</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/" target="_self">
+                <i class="iconfont icon-user-fill"></i>
+                <span>关于</span>
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              <i class="iconfont icon-search"></i>
+            </a>
+          </li>
+          
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">
+              <i class="iconfont icon-dark" id="color-toggle-icon"></i>
+            </a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+  
+
+<div id="banner" class="banner" parallax=true
+     style="background: url('/img/default.png') no-repeat center center; background-size: cover;">
+  <div class="full-bg-img">
+    <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+      <div class="banner-text text-center fade-in-up">
+        <div class="h2">
+          
+            <span id="subtitle" data-typed-text=""></span>
+          
+        </div>
+
+        
+          
+  <div class="mt-3">
+    
+    
+      <span class="post-meta">
+        <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+        <time datetime="2024-03-21 19:11" pubdate>
+          2024年3月21日 晚上
+        </time>
+      </span>
+    
+  </div>
+
+  <div class="mt-1">
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-chart"></i>
+        
+          1.7k 字
+        
+      </span>
+    
+
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-clock-fill"></i>
+        
+        
+        
+          15 分钟
+        
+      </span>
+    
+
+    
+    
+  </div>
+
+
+        
+      </div>
+
+      
+    </div>
+  </div>
+</div>
+
+</div>
+
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+
+    </div>
+
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div id="board">
+          <article class="post-content mx-auto">
+            <h1 id="seo-header"></h1>
+            
+            
+              <div class="markdown-body">
+                
+                <h1 id="Servlet学习笔记-05-Servlet继承结构"><a href="#Servlet学习笔记-05-Servlet继承结构" class="headerlink" title="Servlet学习笔记_05_Servlet继承结构"></a>Servlet学习笔记_05_Servlet继承结构</h1><h2 id="1-Servlet结口"><a href="#1-Servlet结口" class="headerlink" title="1. Servlet结口"></a>1. Servlet结口</h2><blockquote>
+<p>Servlet接口源码</p>
+</blockquote>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-keyword">public</span> <span class="hljs-keyword">interface</span> <span class="hljs-title class_">Servlet</span> &#123;<br>    <span class="hljs-keyword">void</span> <span class="hljs-title function_">init</span><span class="hljs-params">(ServletConfig var1)</span> <span class="hljs-keyword">throws</span> ServletException;<br> <br>    ServletConfig <span class="hljs-title function_">getServletConfig</span><span class="hljs-params">()</span>;<br> <br>    <span class="hljs-keyword">void</span> <span class="hljs-title function_">service</span><span class="hljs-params">(ServletRequest var1, ServletResponse var2)</span> <span class="hljs-keyword">throws</span> ServletException, IOException;<br> <br>    String <span class="hljs-title function_">getServletInfo</span><span class="hljs-params">()</span>;<br> <br>    <span class="hljs-keyword">void</span> <span class="hljs-title function_">destroy</span><span class="hljs-params">()</span>;<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<blockquote>
+<p>接口及方法说明</p>
+</blockquote>
+<ul>
+<li>Servlet 规范接口,所有的Servlet必须实现 <ul>
+<li>public void init(ServletConfig config) throws ServletException;   <ul>
+<li>初始化方法,容器在构造servlet对象后,自动调用的方法,容器负责实例化一个ServletConfig对象,并在调用该方法时传入</li>
+<li>ServletConfig对象可以为Servlet 提供初始化参数</li>
+</ul>
+</li>
+<li>public ServletConfig getServletConfig();<ul>
+<li>获取ServletConfig对象的方法,后续可以通过该对象获取Servlet初始化参数</li>
+</ul>
+</li>
+<li>public void service(ServletRequest req, ServletResponse res) throws ServletException, IOException;<ul>
+<li>处理请求并做出响应的服务方法,每次请求产生时由容器调用</li>
+<li>容器创建一个ServletRequest对象和ServletResponse对象,容器在调用service方法时,传入这两个对象</li>
+</ul>
+</li>
+<li>public String getServletInfo();<ul>
+<li>获取ServletInfo信息的方法</li>
+</ul>
+</li>
+<li>public void destroy();<ul>
+<li>Servlet实例在销毁之前调用的方法</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<h2 id="2-GenericServlet-抽象类"><a href="#2-GenericServlet-抽象类" class="headerlink" title="2. GenericServlet 抽象类"></a>2. GenericServlet 抽象类</h2><blockquote>
+<p>GenericServlet 抽象类源码</p>
+</blockquote>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-comment">//javax.servlet.GenericServlet</span><br>   <span class="hljs-keyword">public</span> <span class="hljs-keyword">abstract</span> <span class="hljs-keyword">class</span> <span class="hljs-title class_">GenericServlet</span> <span class="hljs-keyword">implements</span> <span class="hljs-title class_">Servlet</span>, ServletConfig, Serializable &#123;<br>   <br>       <span class="hljs-keyword">private</span> <span class="hljs-keyword">static</span> <span class="hljs-keyword">final</span> <span class="hljs-type">long</span> <span class="hljs-variable">serialVersionUID</span> <span class="hljs-operator">=</span> <span class="hljs-number">1L</span>;<br>       <span class="hljs-keyword">private</span> <span class="hljs-keyword">transient</span> ServletConfig config;<br>       <br>       <span class="hljs-keyword">public</span> <span class="hljs-title function_">GenericServlet</span><span class="hljs-params">()</span> &#123;&#125;<br><br>       <span class="hljs-meta">@Override</span><br>       <span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title function_">init</span><span class="hljs-params">(ServletConfig config)</span> <span class="hljs-keyword">throws</span> ServletException &#123;<br>           <span class="hljs-built_in">this</span>.config = config;<br>           <span class="hljs-built_in">this</span>.init();<br>       &#125;<br>       <br>       <span class="hljs-comment">// 空方法，这个方法是GenericServlet自己的方法，而不是从Servlet继承下来的。</span><br>       <span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title function_">init</span><span class="hljs-params">()</span> <span class="hljs-keyword">throws</span> ServletException &#123;&#125;<br>               <br>       <span class="hljs-meta">@Override</span><br>       <span class="hljs-keyword">public</span> <span class="hljs-keyword">abstract</span> <span class="hljs-keyword">void</span> <span class="hljs-title function_">service</span><span class="hljs-params">(ServletRequest req, ServletResponse res)</span> <br>               <span class="hljs-keyword">throws</span> ServletException, IOException;<br>       <span class="hljs-meta">@Override</span><br>       <span class="hljs-keyword">public</span> ServletConfig <span class="hljs-title function_">getServletConfig</span><span class="hljs-params">()</span> &#123;<br>           <span class="hljs-keyword">return</span> config;<br>       &#125;<br>       <span class="hljs-meta">@Override</span><br>       <span class="hljs-keyword">public</span> String <span class="hljs-title function_">getServletInfo</span><span class="hljs-params">()</span> &#123;<br>           <span class="hljs-keyword">return</span> <span class="hljs-string">&quot;&quot;</span>;<br>       &#125;<br>       <span class="hljs-meta">@Override</span><br>       <span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title function_">destroy</span><span class="hljs-params">()</span> &#123;&#125;<br><br>               <br>       <span class="hljs-meta">@Override</span><br>       <span class="hljs-keyword">public</span> String <span class="hljs-title function_">getInitParameter</span><span class="hljs-params">(String name)</span> &#123;<br>           <span class="hljs-keyword">return</span> getServletConfig().getInitParameter(name);<br>       &#125;<br>       <span class="hljs-meta">@Override</span><br>       <span class="hljs-keyword">public</span> Enumeration&lt;String&gt; <span class="hljs-title function_">getInitParameterNames</span><span class="hljs-params">()</span> &#123;<br>           <span class="hljs-keyword">return</span> getServletConfig().getInitParameterNames();<br>       &#125;<br>       <span class="hljs-meta">@Override</span><br>       <span class="hljs-keyword">public</span> ServletContext <span class="hljs-title function_">getServletContext</span><span class="hljs-params">()</span> &#123;<br>           <span class="hljs-keyword">return</span> getServletConfig().getServletContext();<br>       &#125;<br>       <span class="hljs-meta">@Override</span><br>       <span class="hljs-keyword">public</span> String <span class="hljs-title function_">getServletName</span><span class="hljs-params">()</span> &#123;<br>           <span class="hljs-keyword">return</span> config.getServletName();<br>       &#125;<br><br>       <span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title function_">log</span><span class="hljs-params">(String msg)</span> &#123;<br>           getServletContext().log(getServletName() + <span class="hljs-string">&quot;: &quot;</span> + msg);<br>       &#125;<br>       <span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title function_">log</span><span class="hljs-params">(String message, Throwable t)</span> &#123;<br>           getServletContext().log(getServletName() + <span class="hljs-string">&quot;: &quot;</span> + message, t);<br>       &#125;<br><br>   &#125;<br><br></code></pre></td></tr></table></figure>
+
+<blockquote>
+<p>源码解释</p>
+</blockquote>
+<p>GenericServlet 抽象类是对Servlet接口一些固定功能的粗糙实现,以及对service方法的再次抽象声明,并定义了一些其他相关功能方法</p>
+<ul>
+<li>private transient ServletConfig config; <ul>
+<li>初始化配置对象作为属性</li>
+</ul>
+</li>
+<li>public GenericServlet() { } <ul>
+<li>构造器,为了满足继承而准备</li>
+</ul>
+</li>
+<li>public void destroy() { } <ul>
+<li>销毁方法的平庸实现</li>
+</ul>
+</li>
+<li>public String getInitParameter(String name) <ul>
+<li>获取初始参数的快捷方法</li>
+</ul>
+</li>
+<li>public Enumeration<String> getInitParameterNames() <ul>
+<li>返回所有初始化参数名的方法</li>
+</ul>
+</String></li>
+<li>public ServletConfig getServletConfig()<ul>
+<li>获取初始Servlet初始配置对象ServletConfig的方法</li>
+</ul>
+</li>
+<li>public ServletContext getServletContext()<ul>
+<li>获取上下文对象ServletContext的方法</li>
+</ul>
+</li>
+<li>public String getServletInfo() <ul>
+<li>获取Servlet信息的平庸实现</li>
+</ul>
+</li>
+<li>public void init(ServletConfig config) throws ServletException() <ul>
+<li>初始化方法的实现,并在此调用了init的重载方法</li>
+</ul>
+</li>
+<li>public void init() throws ServletException <ul>
+<li>重载init方法,为了让我们自己定义初始化功能的方法</li>
+</ul>
+</li>
+<li>public void log(String msg) </li>
+<li>public void log(String message, Throwable t)<ul>
+<li>打印日志的方法及重载</li>
+</ul>
+</li>
+<li>public abstract void service(ServletRequest req, ServletResponse res) throws ServletException, IOException; <ul>
+<li>服务方法再次声明</li>
+</ul>
+</li>
+<li>public String getServletName() <ul>
+<li>获取ServletName的方法</li>
+</ul>
+</li>
+</ul>
+<h2 id="3-HttpServlet-抽象类"><a href="#3-HttpServlet-抽象类" class="headerlink" title="3. HttpServlet 抽象类"></a>3. HttpServlet 抽象类</h2><blockquote>
+<p>HttpServlet 抽象类源码</p>
+</blockquote>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br><span class="line">116</span><br><span class="line">117</span><br><span class="line">118</span><br><span class="line">119</span><br><span class="line">120</span><br><span class="line">121</span><br><span class="line">122</span><br><span class="line">123</span><br><span class="line">124</span><br><span class="line">125</span><br><span class="line">126</span><br><span class="line">127</span><br><span class="line">128</span><br><span class="line">129</span><br><span class="line">130</span><br><span class="line">131</span><br><span class="line">132</span><br><span class="line">133</span><br><span class="line">134</span><br><span class="line">135</span><br><span class="line">136</span><br><span class="line">137</span><br><span class="line">138</span><br><span class="line">139</span><br><span class="line">140</span><br><span class="line">141</span><br><span class="line">142</span><br><span class="line">143</span><br><span class="line">144</span><br><span class="line">145</span><br><span class="line">146</span><br><span class="line">147</span><br><span class="line">148</span><br><span class="line">149</span><br><span class="line">150</span><br><span class="line">151</span><br><span class="line">152</span><br><span class="line">153</span><br><span class="line">154</span><br><span class="line">155</span><br><span class="line">156</span><br><span class="line">157</span><br><span class="line">158</span><br><span class="line">159</span><br><span class="line">160</span><br><span class="line">161</span><br><span class="line">162</span><br><span class="line">163</span><br><span class="line">164</span><br><span class="line">165</span><br><span class="line">166</span><br><span class="line">167</span><br><span class="line">168</span><br><span class="line">169</span><br><span class="line">170</span><br><span class="line">171</span><br><span class="line">172</span><br><span class="line">173</span><br><span class="line">174</span><br><span class="line">175</span><br><span class="line">176</span><br><span class="line">177</span><br><span class="line">178</span><br><span class="line">179</span><br><span class="line">180</span><br><span class="line">181</span><br><span class="line">182</span><br><span class="line">183</span><br><span class="line">184</span><br><span class="line">185</span><br><span class="line">186</span><br><span class="line">187</span><br><span class="line">188</span><br><span class="line">189</span><br><span class="line">190</span><br><span class="line">191</span><br><span class="line">192</span><br><span class="line">193</span><br><span class="line">194</span><br><span class="line">195</span><br><span class="line">196</span><br><span class="line">197</span><br><span class="line">198</span><br><span class="line">199</span><br><span class="line">200</span><br><span class="line">201</span><br><span class="line">202</span><br><span class="line">203</span><br><span class="line">204</span><br><span class="line">205</span><br><span class="line">206</span><br><span class="line">207</span><br><span class="line">208</span><br><span class="line">209</span><br><span class="line">210</span><br><span class="line">211</span><br><span class="line">212</span><br><span class="line">213</span><br><span class="line">214</span><br><span class="line">215</span><br><span class="line">216</span><br><span class="line">217</span><br><span class="line">218</span><br><span class="line">219</span><br><span class="line">220</span><br><span class="line">221</span><br><span class="line">222</span><br><span class="line">223</span><br><span class="line">224</span><br><span class="line">225</span><br><span class="line">226</span><br><span class="line">227</span><br><span class="line">228</span><br><span class="line">229</span><br><span class="line">230</span><br><span class="line">231</span><br><span class="line">232</span><br><span class="line">233</span><br><span class="line">234</span><br><span class="line">235</span><br><span class="line">236</span><br><span class="line">237</span><br><span class="line">238</span><br><span class="line">239</span><br><span class="line">240</span><br><span class="line">241</span><br><span class="line">242</span><br><span class="line">243</span><br><span class="line">244</span><br><span class="line">245</span><br><span class="line">246</span><br><span class="line">247</span><br><span class="line">248</span><br><span class="line">249</span><br><span class="line">250</span><br><span class="line">251</span><br><span class="line">252</span><br><span class="line">253</span><br><span class="line">254</span><br><span class="line">255</span><br><span class="line">256</span><br><span class="line">257</span><br><span class="line">258</span><br><span class="line">259</span><br><span class="line">260</span><br><span class="line">261</span><br><span class="line">262</span><br><span class="line">263</span><br><span class="line">264</span><br><span class="line">265</span><br><span class="line">266</span><br><span class="line">267</span><br><span class="line">268</span><br><span class="line">269</span><br><span class="line">270</span><br><span class="line">271</span><br></pre></td><td class="code"><pre><code class="hljs java"> <br><span class="hljs-keyword">package</span> javax.servlet.http;<br> <br><span class="hljs-keyword">import</span> java.io.IOException;<br><span class="hljs-keyword">import</span> java.io.Serializable;<br><span class="hljs-keyword">import</span> java.lang.reflect.Method;<br><span class="hljs-keyword">import</span> java.text.MessageFormat;<br><span class="hljs-keyword">import</span> java.util.Enumeration;<br><span class="hljs-keyword">import</span> java.util.ResourceBundle;<br><span class="hljs-keyword">import</span> javax.servlet.GenericServlet;<br><span class="hljs-keyword">import</span> javax.servlet.ServletException;<br><span class="hljs-keyword">import</span> javax.servlet.ServletOutputStream;<br><span class="hljs-keyword">import</span> javax.servlet.ServletRequest;<br><span class="hljs-keyword">import</span> javax.servlet.ServletResponse;<br><span class="hljs-keyword">import</span> javax.servlet.http.HttpServletRequest;<br><span class="hljs-keyword">import</span> javax.servlet.http.HttpServletResponse;<br><span class="hljs-keyword">import</span> javax.servlet.http.NoBodyResponse;<br> <br><span class="hljs-keyword">public</span> <span class="hljs-keyword">abstract</span> <span class="hljs-keyword">class</span> <span class="hljs-title class_">HttpServlet</span> <span class="hljs-keyword">extends</span> <span class="hljs-title class_">GenericServlet</span> <span class="hljs-keyword">implements</span> <span class="hljs-title class_">Serializable</span> &#123;<br>    <span class="hljs-keyword">private</span> <span class="hljs-keyword">static</span> <span class="hljs-keyword">final</span> <span class="hljs-type">String</span> <span class="hljs-variable">METHOD_DELETE</span> <span class="hljs-operator">=</span> <span class="hljs-string">&quot;DELETE&quot;</span>;<br>    <span class="hljs-keyword">private</span> <span class="hljs-keyword">static</span> <span class="hljs-keyword">final</span> <span class="hljs-type">String</span> <span class="hljs-variable">METHOD_HEAD</span> <span class="hljs-operator">=</span> <span class="hljs-string">&quot;HEAD&quot;</span>;<br>    <span class="hljs-keyword">private</span> <span class="hljs-keyword">static</span> <span class="hljs-keyword">final</span> <span class="hljs-type">String</span> <span class="hljs-variable">METHOD_GET</span> <span class="hljs-operator">=</span> <span class="hljs-string">&quot;GET&quot;</span>;<br>    <span class="hljs-keyword">private</span> <span class="hljs-keyword">static</span> <span class="hljs-keyword">final</span> <span class="hljs-type">String</span> <span class="hljs-variable">METHOD_OPTIONS</span> <span class="hljs-operator">=</span> <span class="hljs-string">&quot;OPTIONS&quot;</span>;<br>    <span class="hljs-keyword">private</span> <span class="hljs-keyword">static</span> <span class="hljs-keyword">final</span> <span class="hljs-type">String</span> <span class="hljs-variable">METHOD_POST</span> <span class="hljs-operator">=</span> <span class="hljs-string">&quot;POST&quot;</span>;<br>    <span class="hljs-keyword">private</span> <span class="hljs-keyword">static</span> <span class="hljs-keyword">final</span> <span class="hljs-type">String</span> <span class="hljs-variable">METHOD_PUT</span> <span class="hljs-operator">=</span> <span class="hljs-string">&quot;PUT&quot;</span>;<br>    <span class="hljs-keyword">private</span> <span class="hljs-keyword">static</span> <span class="hljs-keyword">final</span> <span class="hljs-type">String</span> <span class="hljs-variable">METHOD_TRACE</span> <span class="hljs-operator">=</span> <span class="hljs-string">&quot;TRACE&quot;</span>;<br>    <span class="hljs-keyword">private</span> <span class="hljs-keyword">static</span> <span class="hljs-keyword">final</span> <span class="hljs-type">String</span> <span class="hljs-variable">HEADER_IFMODSINCE</span> <span class="hljs-operator">=</span> <span class="hljs-string">&quot;If-Modified-Since&quot;</span>;<br>    <span class="hljs-keyword">private</span> <span class="hljs-keyword">static</span> <span class="hljs-keyword">final</span> <span class="hljs-type">String</span> <span class="hljs-variable">HEADER_LASTMOD</span> <span class="hljs-operator">=</span> <span class="hljs-string">&quot;Last-Modified&quot;</span>;<br>    <span class="hljs-keyword">private</span> <span class="hljs-keyword">static</span> <span class="hljs-keyword">final</span> <span class="hljs-type">String</span> <span class="hljs-variable">LSTRING_FILE</span> <span class="hljs-operator">=</span> <span class="hljs-string">&quot;javax.servlet.http.LocalStrings&quot;</span>;<br>    <span class="hljs-keyword">private</span> <span class="hljs-keyword">static</span> <span class="hljs-type">ResourceBundle</span> <span class="hljs-variable">lStrings</span> <span class="hljs-operator">=</span> ResourceBundle.getBundle(<span class="hljs-string">&quot;javax.servlet.http.LocalStrings&quot;</span>);<br> <br>    <span class="hljs-keyword">public</span> <span class="hljs-title function_">HttpServlet</span><span class="hljs-params">()</span> &#123;<br>    &#125;<br> <br>    <span class="hljs-keyword">protected</span> <span class="hljs-keyword">void</span> <span class="hljs-title function_">doGet</span><span class="hljs-params">(HttpServletRequest req, HttpServletResponse resp)</span> <span class="hljs-keyword">throws</span> ServletException, IOException &#123;<br>        <span class="hljs-type">String</span> <span class="hljs-variable">protocol</span> <span class="hljs-operator">=</span> req.getProtocol();<br>        <span class="hljs-type">String</span> <span class="hljs-variable">msg</span> <span class="hljs-operator">=</span> lStrings.getString(<span class="hljs-string">&quot;http.method_get_not_supported&quot;</span>);<br>        <span class="hljs-keyword">if</span>(protocol.endsWith(<span class="hljs-string">&quot;1.1&quot;</span>)) &#123;<br>            resp.sendError(<span class="hljs-number">405</span>, msg);<br>        &#125; <span class="hljs-keyword">else</span> &#123;<br>            resp.sendError(<span class="hljs-number">400</span>, msg);<br>        &#125;<br> <br>    &#125;<br> <br>    <span class="hljs-keyword">protected</span> <span class="hljs-type">long</span> <span class="hljs-title function_">getLastModified</span><span class="hljs-params">(HttpServletRequest req)</span> &#123;<br>        <span class="hljs-keyword">return</span> -<span class="hljs-number">1L</span>;<br>    &#125;<br> <br>    <span class="hljs-keyword">protected</span> <span class="hljs-keyword">void</span> <span class="hljs-title function_">doHead</span><span class="hljs-params">(HttpServletRequest req, HttpServletResponse resp)</span> <span class="hljs-keyword">throws</span> ServletException, IOException &#123;<br>        <span class="hljs-type">NoBodyResponse</span> <span class="hljs-variable">response</span> <span class="hljs-operator">=</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">NoBodyResponse</span>(resp);<br>        <span class="hljs-built_in">this</span>.doGet(req, response);<br>        response.setContentLength();<br>    &#125;<br> <br>    <span class="hljs-keyword">protected</span> <span class="hljs-keyword">void</span> <span class="hljs-title function_">doPost</span><span class="hljs-params">(HttpServletRequest req, HttpServletResponse resp)</span> <span class="hljs-keyword">throws</span> ServletException, IOException &#123;<br>        <span class="hljs-type">String</span> <span class="hljs-variable">protocol</span> <span class="hljs-operator">=</span> req.getProtocol();<br>        <span class="hljs-type">String</span> <span class="hljs-variable">msg</span> <span class="hljs-operator">=</span> lStrings.getString(<span class="hljs-string">&quot;http.method_post_not_supported&quot;</span>);<br>        <span class="hljs-keyword">if</span>(protocol.endsWith(<span class="hljs-string">&quot;1.1&quot;</span>)) &#123;<br>            resp.sendError(<span class="hljs-number">405</span>, msg);<br>        &#125; <span class="hljs-keyword">else</span> &#123;<br>            resp.sendError(<span class="hljs-number">400</span>, msg);<br>        &#125;<br> <br>    &#125;<br> <br>    <span class="hljs-keyword">protected</span> <span class="hljs-keyword">void</span> <span class="hljs-title function_">doPut</span><span class="hljs-params">(HttpServletRequest req, HttpServletResponse resp)</span> <span class="hljs-keyword">throws</span> ServletException, IOException &#123;<br>        <span class="hljs-type">String</span> <span class="hljs-variable">protocol</span> <span class="hljs-operator">=</span> req.getProtocol();<br>        <span class="hljs-type">String</span> <span class="hljs-variable">msg</span> <span class="hljs-operator">=</span> lStrings.getString(<span class="hljs-string">&quot;http.method_put_not_supported&quot;</span>);<br>        <span class="hljs-keyword">if</span>(protocol.endsWith(<span class="hljs-string">&quot;1.1&quot;</span>)) &#123;<br>            resp.sendError(<span class="hljs-number">405</span>, msg);<br>        &#125; <span class="hljs-keyword">else</span> &#123;<br>            resp.sendError(<span class="hljs-number">400</span>, msg);<br>        &#125;<br> <br>    &#125;<br> <br>    <span class="hljs-keyword">protected</span> <span class="hljs-keyword">void</span> <span class="hljs-title function_">doDelete</span><span class="hljs-params">(HttpServletRequest req, HttpServletResponse resp)</span> <span class="hljs-keyword">throws</span> ServletException, IOException &#123;<br>        <span class="hljs-type">String</span> <span class="hljs-variable">protocol</span> <span class="hljs-operator">=</span> req.getProtocol();<br>        <span class="hljs-type">String</span> <span class="hljs-variable">msg</span> <span class="hljs-operator">=</span> lStrings.getString(<span class="hljs-string">&quot;http.method_delete_not_supported&quot;</span>);<br>        <span class="hljs-keyword">if</span>(protocol.endsWith(<span class="hljs-string">&quot;1.1&quot;</span>)) &#123;<br>            resp.sendError(<span class="hljs-number">405</span>, msg);<br>        &#125; <span class="hljs-keyword">else</span> &#123;<br>            resp.sendError(<span class="hljs-number">400</span>, msg);<br>        &#125;<br> <br>    &#125;<br> <br>    <span class="hljs-keyword">private</span> Method[] getAllDeclaredMethods(Class c) &#123;<br>        <span class="hljs-keyword">if</span>(c.equals(HttpServlet.class)) &#123;<br>            <span class="hljs-keyword">return</span> <span class="hljs-literal">null</span>;<br>        &#125; <span class="hljs-keyword">else</span> &#123;<br>            Method[] parentMethods = <span class="hljs-built_in">this</span>.getAllDeclaredMethods(c.getSuperclass());<br>            Method[] thisMethods = c.getDeclaredMethods();<br>            <span class="hljs-keyword">if</span>(parentMethods != <span class="hljs-literal">null</span> &amp;&amp; parentMethods.length &gt; <span class="hljs-number">0</span>) &#123;<br>                Method[] allMethods = <span class="hljs-keyword">new</span> <span class="hljs-title class_">Method</span>[parentMethods.length + thisMethods.length];<br>                System.arraycopy(parentMethods, <span class="hljs-number">0</span>, allMethods, <span class="hljs-number">0</span>, parentMethods.length);<br>                System.arraycopy(thisMethods, <span class="hljs-number">0</span>, allMethods, parentMethods.length, thisMethods.length);<br>                thisMethods = allMethods;<br>            &#125;<br> <br>            <span class="hljs-keyword">return</span> thisMethods;<br>        &#125;<br>    &#125;<br> <br>    <span class="hljs-keyword">protected</span> <span class="hljs-keyword">void</span> <span class="hljs-title function_">doOptions</span><span class="hljs-params">(HttpServletRequest req, HttpServletResponse resp)</span> <span class="hljs-keyword">throws</span> ServletException, IOException &#123;<br>        Method[] methods = <span class="hljs-built_in">this</span>.getAllDeclaredMethods(<span class="hljs-built_in">this</span>.getClass());<br>        <span class="hljs-type">boolean</span> <span class="hljs-variable">ALLOW_GET</span> <span class="hljs-operator">=</span> <span class="hljs-literal">false</span>;<br>        <span class="hljs-type">boolean</span> <span class="hljs-variable">ALLOW_HEAD</span> <span class="hljs-operator">=</span> <span class="hljs-literal">false</span>;<br>        <span class="hljs-type">boolean</span> <span class="hljs-variable">ALLOW_POST</span> <span class="hljs-operator">=</span> <span class="hljs-literal">false</span>;<br>        <span class="hljs-type">boolean</span> <span class="hljs-variable">ALLOW_PUT</span> <span class="hljs-operator">=</span> <span class="hljs-literal">false</span>;<br>        <span class="hljs-type">boolean</span> <span class="hljs-variable">ALLOW_DELETE</span> <span class="hljs-operator">=</span> <span class="hljs-literal">false</span>;<br>        <span class="hljs-type">boolean</span> <span class="hljs-variable">ALLOW_TRACE</span> <span class="hljs-operator">=</span> <span class="hljs-literal">true</span>;<br>        <span class="hljs-type">boolean</span> <span class="hljs-variable">ALLOW_OPTIONS</span> <span class="hljs-operator">=</span> <span class="hljs-literal">true</span>;<br> <br>        <span class="hljs-keyword">for</span>(<span class="hljs-type">int</span> <span class="hljs-variable">allow</span> <span class="hljs-operator">=</span> <span class="hljs-number">0</span>; allow &lt; methods.length; ++allow) &#123;<br>            <span class="hljs-type">Method</span> <span class="hljs-variable">m</span> <span class="hljs-operator">=</span> methods[allow];<br>            <span class="hljs-keyword">if</span>(m.getName().equals(<span class="hljs-string">&quot;doGet&quot;</span>)) &#123;<br>                ALLOW_GET = <span class="hljs-literal">true</span>;<br>                ALLOW_HEAD = <span class="hljs-literal">true</span>;<br>            &#125;<br> <br>            <span class="hljs-keyword">if</span>(m.getName().equals(<span class="hljs-string">&quot;doPost&quot;</span>)) &#123;<br>                ALLOW_POST = <span class="hljs-literal">true</span>;<br>            &#125;<br> <br>            <span class="hljs-keyword">if</span>(m.getName().equals(<span class="hljs-string">&quot;doPut&quot;</span>)) &#123;<br>                ALLOW_PUT = <span class="hljs-literal">true</span>;<br>            &#125;<br> <br>            <span class="hljs-keyword">if</span>(m.getName().equals(<span class="hljs-string">&quot;doDelete&quot;</span>)) &#123;<br>                ALLOW_DELETE = <span class="hljs-literal">true</span>;<br>            &#125;<br>        &#125;<br> <br>        <span class="hljs-type">String</span> <span class="hljs-variable">var13</span> <span class="hljs-operator">=</span> <span class="hljs-literal">null</span>;<br>        <span class="hljs-keyword">if</span>(ALLOW_GET &amp;&amp; var13 == <span class="hljs-literal">null</span>) &#123;<br>            var13 = <span class="hljs-string">&quot;GET&quot;</span>;<br>        &#125;<br> <br>        <span class="hljs-keyword">if</span>(ALLOW_HEAD) &#123;<br>            <span class="hljs-keyword">if</span>(var13 == <span class="hljs-literal">null</span>) &#123;<br>                var13 = <span class="hljs-string">&quot;HEAD&quot;</span>;<br>            &#125; <span class="hljs-keyword">else</span> &#123;<br>                var13 = var13 + <span class="hljs-string">&quot;, HEAD&quot;</span>;<br>            &#125;<br>        &#125;<br> <br>        <span class="hljs-keyword">if</span>(ALLOW_POST) &#123;<br>            <span class="hljs-keyword">if</span>(var13 == <span class="hljs-literal">null</span>) &#123;<br>                var13 = <span class="hljs-string">&quot;POST&quot;</span>;<br>            &#125; <span class="hljs-keyword">else</span> &#123;<br>                var13 = var13 + <span class="hljs-string">&quot;, POST&quot;</span>;<br>            &#125;<br>        &#125;<br> <br>        <span class="hljs-keyword">if</span>(ALLOW_PUT) &#123;<br>            <span class="hljs-keyword">if</span>(var13 == <span class="hljs-literal">null</span>) &#123;<br>                var13 = <span class="hljs-string">&quot;PUT&quot;</span>;<br>            &#125; <span class="hljs-keyword">else</span> &#123;<br>                var13 = var13 + <span class="hljs-string">&quot;, PUT&quot;</span>;<br>            &#125;<br>        &#125;<br> <br>        <span class="hljs-keyword">if</span>(ALLOW_DELETE) &#123;<br>            <span class="hljs-keyword">if</span>(var13 == <span class="hljs-literal">null</span>) &#123;<br>                var13 = <span class="hljs-string">&quot;DELETE&quot;</span>;<br>            &#125; <span class="hljs-keyword">else</span> &#123;<br>                var13 = var13 + <span class="hljs-string">&quot;, DELETE&quot;</span>;<br>            &#125;<br>        &#125;<br> <br>        <span class="hljs-keyword">if</span>(ALLOW_TRACE) &#123;<br>            <span class="hljs-keyword">if</span>(var13 == <span class="hljs-literal">null</span>) &#123;<br>                var13 = <span class="hljs-string">&quot;TRACE&quot;</span>;<br>            &#125; <span class="hljs-keyword">else</span> &#123;<br>                var13 = var13 + <span class="hljs-string">&quot;, TRACE&quot;</span>;<br>            &#125;<br>        &#125;<br> <br>        <span class="hljs-keyword">if</span>(ALLOW_OPTIONS) &#123;<br>            <span class="hljs-keyword">if</span>(var13 == <span class="hljs-literal">null</span>) &#123;<br>                var13 = <span class="hljs-string">&quot;OPTIONS&quot;</span>;<br>            &#125; <span class="hljs-keyword">else</span> &#123;<br>                var13 = var13 + <span class="hljs-string">&quot;, OPTIONS&quot;</span>;<br>            &#125;<br>        &#125;<br> <br>        resp.setHeader(<span class="hljs-string">&quot;Allow&quot;</span>, var13);<br>    &#125;<br> <br>    <span class="hljs-keyword">protected</span> <span class="hljs-keyword">void</span> <span class="hljs-title function_">doTrace</span><span class="hljs-params">(HttpServletRequest req, HttpServletResponse resp)</span> <span class="hljs-keyword">throws</span> ServletException, IOException &#123;<br>        <span class="hljs-type">String</span> <span class="hljs-variable">CRLF</span> <span class="hljs-operator">=</span> <span class="hljs-string">&quot;\r\n&quot;</span>;<br>        <span class="hljs-type">String</span> <span class="hljs-variable">responseString</span> <span class="hljs-operator">=</span> <span class="hljs-string">&quot;TRACE &quot;</span> + req.getRequestURI() + <span class="hljs-string">&quot; &quot;</span> + req.getProtocol();<br> <br>        String out;<br>        <span class="hljs-keyword">for</span>(<span class="hljs-type">Enumeration</span> <span class="hljs-variable">reqHeaderEnum</span> <span class="hljs-operator">=</span> req.getHeaderNames(); reqHeaderEnum.hasMoreElements(); responseString = responseString + CRLF + out + <span class="hljs-string">&quot;: &quot;</span> + req.getHeader(out)) &#123;<br>            out = (String)reqHeaderEnum.nextElement();<br>        &#125;<br> <br>        responseString = responseString + CRLF;<br>        <span class="hljs-type">int</span> <span class="hljs-variable">responseLength</span> <span class="hljs-operator">=</span> responseString.length();<br>        resp.setContentType(<span class="hljs-string">&quot;message/http&quot;</span>);<br>        resp.setContentLength(responseLength);<br>        <span class="hljs-type">ServletOutputStream</span> <span class="hljs-variable">out1</span> <span class="hljs-operator">=</span> resp.getOutputStream();<br>        out1.print(responseString);<br>        out1.close();<br>    &#125;<br> <br>    <span class="hljs-keyword">protected</span> <span class="hljs-keyword">void</span> <span class="hljs-title function_">service</span><span class="hljs-params">(HttpServletRequest req, HttpServletResponse resp)</span> <span class="hljs-keyword">throws</span> ServletException, IOException &#123;<br>        <span class="hljs-type">String</span> <span class="hljs-variable">method</span> <span class="hljs-operator">=</span> req.getMethod();<br>        <span class="hljs-type">long</span> errMsg;<br>        <span class="hljs-keyword">if</span>(method.equals(<span class="hljs-string">&quot;GET&quot;</span>)) &#123;<br>            errMsg = <span class="hljs-built_in">this</span>.getLastModified(req);<br>            <span class="hljs-keyword">if</span>(errMsg == -<span class="hljs-number">1L</span>) &#123;<br>                <span class="hljs-built_in">this</span>.doGet(req, resp);<br>            &#125; <span class="hljs-keyword">else</span> &#123;<br>                <span class="hljs-type">long</span> <span class="hljs-variable">ifModifiedSince</span> <span class="hljs-operator">=</span> req.getDateHeader(<span class="hljs-string">&quot;If-Modified-Since&quot;</span>);<br>                <span class="hljs-keyword">if</span>(ifModifiedSince &lt; errMsg / <span class="hljs-number">1000L</span> * <span class="hljs-number">1000L</span>) &#123;<br>                    <span class="hljs-built_in">this</span>.maybeSetLastModified(resp, errMsg);<br>                    <span class="hljs-built_in">this</span>.doGet(req, resp);<br>                &#125; <span class="hljs-keyword">else</span> &#123;<br>                    resp.setStatus(<span class="hljs-number">304</span>);<br>                &#125;<br>            &#125;<br>        &#125; <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span>(method.equals(<span class="hljs-string">&quot;HEAD&quot;</span>)) &#123;<br>            errMsg = <span class="hljs-built_in">this</span>.getLastModified(req);<br>            <span class="hljs-built_in">this</span>.maybeSetLastModified(resp, errMsg);<br>            <span class="hljs-built_in">this</span>.doHead(req, resp);<br>        &#125; <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span>(method.equals(<span class="hljs-string">&quot;POST&quot;</span>)) &#123;<br>            <span class="hljs-built_in">this</span>.doPost(req, resp);<br>        &#125; <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span>(method.equals(<span class="hljs-string">&quot;PUT&quot;</span>)) &#123;<br>            <span class="hljs-built_in">this</span>.doPut(req, resp);<br>        &#125; <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span>(method.equals(<span class="hljs-string">&quot;DELETE&quot;</span>)) &#123;<br>            <span class="hljs-built_in">this</span>.doDelete(req, resp);<br>        &#125; <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span>(method.equals(<span class="hljs-string">&quot;OPTIONS&quot;</span>)) &#123;<br>            <span class="hljs-built_in">this</span>.doOptions(req, resp);<br>        &#125; <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span>(method.equals(<span class="hljs-string">&quot;TRACE&quot;</span>)) &#123;<br>            <span class="hljs-built_in">this</span>.doTrace(req, resp);<br>        &#125; <span class="hljs-keyword">else</span> &#123;<br>            <span class="hljs-type">String</span> <span class="hljs-variable">errMsg1</span> <span class="hljs-operator">=</span> lStrings.getString(<span class="hljs-string">&quot;http.method_not_implemented&quot;</span>);<br>            Object[] errArgs = <span class="hljs-keyword">new</span> <span class="hljs-title class_">Object</span>[]&#123;method&#125;;<br>            errMsg1 = MessageFormat.format(errMsg1, errArgs);<br>            resp.sendError(<span class="hljs-number">501</span>, errMsg1);<br>        &#125;<br> <br>    &#125;<br> <br>    <span class="hljs-keyword">private</span> <span class="hljs-keyword">void</span> <span class="hljs-title function_">maybeSetLastModified</span><span class="hljs-params">(HttpServletResponse resp, <span class="hljs-type">long</span> lastModified)</span> &#123;<br>        <span class="hljs-keyword">if</span>(!resp.containsHeader(<span class="hljs-string">&quot;Last-Modified&quot;</span>)) &#123;<br>            <span class="hljs-keyword">if</span>(lastModified &gt;= <span class="hljs-number">0L</span>) &#123;<br>                resp.setDateHeader(<span class="hljs-string">&quot;Last-Modified&quot;</span>, lastModified);<br>            &#125;<br> <br>        &#125;<br>    &#125;<br> <br>    <span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title function_">service</span><span class="hljs-params">(ServletRequest req, ServletResponse res)</span> <span class="hljs-keyword">throws</span> ServletException, IOException &#123;<br>        HttpServletRequest request;<br>        HttpServletResponse response;<br>        <span class="hljs-keyword">try</span> &#123;<br>            request = (HttpServletRequest)req;<br>            response = (HttpServletResponse)res;<br>        &#125; <span class="hljs-keyword">catch</span> (ClassCastException var6) &#123;<br>            <span class="hljs-keyword">throw</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">ServletException</span>(<span class="hljs-string">&quot;non-HTTP request or response&quot;</span>);<br>        &#125;<br> 		<br>        <span class="hljs-built_in">this</span>.service(request, response);<br>    &#125;<br>&#125;<br><br></code></pre></td></tr></table></figure>
+
+<blockquote>
+<p>解释</p>
+</blockquote>
+<p>abstract class HttpServlet extends GenericServlet  HttpServlet抽象类,除了基本的实现以外,增加了更多的基础功能</p>
+<ul>
+<li>private static final String METHOD_DELETE &#x3D; “DELETE”;</li>
+<li>private static final String METHOD_HEAD &#x3D; “HEAD”;</li>
+<li>private static final String METHOD_GET &#x3D; “GET”;</li>
+<li>private static final String METHOD_OPTIONS &#x3D; “OPTIONS”;</li>
+<li>private static final String METHOD_POST &#x3D; “POST”;</li>
+<li>private static final String METHOD_PUT &#x3D; “PUT”;</li>
+<li>private static final String METHOD_TRACE &#x3D; “TRACE”;<ul>
+<li>上述属性用于定义常见请求方式名常量值</li>
+</ul>
+</li>
+<li>public HttpServlet() {}<ul>
+<li>构造器,用于处理继承</li>
+</ul>
+</li>
+<li>public void service(ServletRequest req, ServletResponse res) throws ServletException, IOException<ul>
+<li>对服务方法的实现</li>
+<li>在该方法中,将请求和响应对象转换成对应HTTP协议的HttpServletRequest HttpServletResponse对象</li>
+<li>调用重载的service方法</li>
+</ul>
+</li>
+<li>public void service(HttpServletRequest req, HttpServletResponse res) throws ServletException, IOException<ul>
+<li>重载的service方法,被重写的service方法所调用</li>
+<li>在该方法中,通过请求方式判断,调用具体的do***方法完成请求的处理</li>
+</ul>
+</li>
+<li>protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException</li>
+<li>protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException</li>
+<li>protected void doHead(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException</li>
+<li>protected void doPut(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException</li>
+<li>protected void doDelete(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException</li>
+<li>protected void doOptions(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException</li>
+<li>protected void doTrace(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException<ul>
+<li>对应不同请求方式的处理方法</li>
+<li>除了doOptions和doTrace方法,其他的do*** 方法都在故意响应错误信息（<u>所以Servlet实现类可以不写service方法，而是重写do***方法来对客户端进行响应</u>）</li>
+</ul>
+</li>
+</ul>
+<h2 id="4-自定义Servlet"><a href="#4-自定义Servlet" class="headerlink" title="4. 自定义Servlet"></a>4. 自定义Servlet</h2><blockquote>
+<p>继承关系图解</p>
+</blockquote>
+<p><img src="/2024/03/21/Servlet-05/Servlet_05_01.png" srcset="/img/loading.gif" lazyload alt=" "></p>
+<p>:star:自定义Servlet中，必须要对处理请求的方法进行重写</p>
+<ul>
+<li>要么重写service方法</li>
+<li>要么重写doGet&#x2F;doPost方法</li>
+</ul>
+
+                
+              </div>
+            
+            <hr/>
+            <div>
+              <div class="post-metas my-3">
+  
+  
+</div>
+
+
+              
+  
+
+  <div class="license-box my-3">
+    <div class="license-title">
+      <div></div>
+      <div>http://example.com/2024/03/21/Servlet-05/</div>
+    </div>
+    <div class="license-meta">
+      
+        <div class="license-meta-item">
+          <div>作者</div>
+          <div>YJYdist</div>
+        </div>
+      
+      
+        <div class="license-meta-item license-meta-date">
+          <div>发布于</div>
+          <div>2024年3月21日</div>
+        </div>
+      
+      
+      
+        <div class="license-meta-item">
+          <div>许可协议</div>
+          <div>
+            
+              
+              
+                <a class="print-no-link" target="_blank" href="https://creativecommons.org/licenses/by/4.0/">
+                  <span class="hint--top hint--rounded" aria-label="BY - 署名">
+                    <i class="iconfont icon-by"></i>
+                  </span>
+                </a>
+              
+            
+          </div>
+        </div>
+      
+    </div>
+    <div class="license-icon iconfont"></div>
+  </div>
+
+
+
+              
+                <div class="post-prevnext my-3">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/2024/03/21/Servlet-04/" title="">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile"></span>
+                        <span class="visible-mobile">上一篇</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/2024/03/21/Servlet-03/" title="">
+                        <span class="hidden-mobile"></span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+          </article>
+        </div>
+      </div>
+    </div>
+
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+  <aside class="sidebar" style="margin-left: -1rem">
+    <div id="toc">
+  <p class="toc-header">
+    <i class="iconfont icon-list"></i>
+    <span>目录</span>
+  </p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+
+
+  </aside>
+
+
+    </div>
+  </div>
+</div>
+
+
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+
+
+
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v" for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    
+
+    
+  </main>
+
+  <footer>
+    <div class="footer-inner">
+  
+    <div class="footer-content">
+       <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a> <i class="iconfont icon-love"></i> <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Fluid</span></a> 
+    </div>
+  
+  
+  
+  
+</div>
+
+  </footer>
+
+  <!-- Scripts -->
+  
+  <script  src="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://lib.baomitu.com/jquery/3.6.4/jquery.min.js" ></script>
+<script  src="https://lib.baomitu.com/twitter-bootstrap/4.6.1/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+
+  <script  src="https://lib.baomitu.com/typed.js/2.0.12/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var subtitle = document.getElementById('subtitle');
+      if (!subtitle || !typing) {
+        return;
+      }
+      var text = subtitle.getAttribute('data-typed-text');
+      
+        typing(text);
+      
+    })(window, document);
+  </script>
+
+
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/tocbot/4.20.1/tocbot.min.js', function() {
+    var toc = jQuery('#toc');
+    if (toc.length === 0 || !window.tocbot) { return; }
+    var boardCtn = jQuery('#board-ctn');
+    var boardTop = boardCtn.offset().top;
+
+    window.tocbot.init(Object.assign({
+      tocSelector     : '#toc-body',
+      contentSelector : '.markdown-body',
+      linkClass       : 'tocbot-link',
+      activeLinkClass : 'tocbot-active-link',
+      listClass       : 'tocbot-list',
+      isCollapsedClass: 'tocbot-is-collapsed',
+      collapsibleClass: 'tocbot-is-collapsible',
+      scrollSmooth    : true,
+      includeTitleTags: true,
+      headingsOffset  : -boardTop,
+    }, CONFIG.toc));
+    if (toc.find('.toc-list-item').length > 0) {
+      toc.css('visibility', 'visible');
+    }
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('tocbot' in window) {
+        tocbot.refresh();
+        var toc = jQuery('#toc');
+        if (toc.length === 0 || !tocbot) {
+          return;
+        }
+        if (toc.find('.toc-list-item').length > 0) {
+          toc.css('visibility', 'visible');
+        }
+      }
+    });
+  });
+</script>
+
+
+  <script src=https://lib.baomitu.com/clipboard.js/2.0.11/clipboard.min.js></script>
+
+  <script>Fluid.plugins.codeWidget();</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/anchor-js/4.3.1/anchor.min.js', function() {
+    window.anchors.options = {
+      placement: CONFIG.anchorjs.placement,
+      visible  : CONFIG.anchorjs.visible
+    };
+    if (CONFIG.anchorjs.icon) {
+      window.anchors.options.icon = CONFIG.anchorjs.icon;
+    }
+    var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+    var res = [];
+    for (var item of el) {
+      res.push('.markdown-body > ' + item.trim());
+    }
+    if (CONFIG.anchorjs.placement === 'left') {
+      window.anchors.options.class = 'anchorjs-link-left';
+    }
+    window.anchors.add(res.join(', '));
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('anchors' in window) {
+        anchors.removeAll();
+        var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+        var res = [];
+        for (var item of el) {
+          res.push('.markdown-body > ' + item.trim());
+        }
+        if (CONFIG.anchorjs.placement === 'left') {
+          anchors.options.class = 'anchorjs-link-left';
+        }
+        anchors.add(res.join(', '));
+      }
+    });
+  });
+</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.js', function() {
+    Fluid.plugins.fancyBox();
+  });
+</script>
+
+
+  <script>Fluid.plugins.imageCaption();</script>
+
+  <script  src="/js/local-search.js" ></script>
+
+
+
+
+
+<!-- 主题的启动项，将它保持在最底部 -->
+<!-- the boot of the theme, keep it at the bottom -->
+<script  src="/js/boot.js" ></script>
+
+
+  
+
+  <noscript>
+    <div class="noscript-warning">博客在允许 JavaScript 运行的环境下浏览效果更佳</div>
+  </noscript>
+</body>
+</html>
