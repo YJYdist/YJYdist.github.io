@@ -16,21 +16,23 @@
   <meta name="author" content="YJYdist">
   <meta name="keywords" content="">
   
-    <meta name="description" content="Servlet学习笔记_04_Servlet生命周期1. 生命周期简介 什么是生命周期   应用程序中的对象不仅在空间上有层次结构关系，在时间上也会因为处于程序运行过程中的不同阶段而表现出不同状态的不同行为——这就是对象的生命周期 简单描述生命周期，就是对象在容器中从开始创建到销毁的过程   Servlet容器   Servlet对象就是Servlet容器创建的，生命周期方法都是由容器（比如tom">
+    <meta name="description" content="Servlet学习笔记_02_Servlet开发流程1. 目标 校验注册时，用户名是否被占用。通过客户端向一个Servlet发送请求，携带username，如果用户名是’atguigu’，则向用户端响应 NO， 如果是其他，响应YES  ##2. 开发流程  步骤一：   开发一个Web类型的module    步骤二：   开发一个UserServlet  1234567891011121314">
 <meta property="og:type" content="article">
-<meta property="og:title" content="Servlet-04">
-<meta property="og:url" content="http://example.com/2024/03/21/Servlet-04/index.html">
+<meta property="og:title" content="Servlet-02">
+<meta property="og:url" content="http://example.com/2024/03/21/Servlet-02/index.html">
 <meta property="og:site_name" content="YJYdist&#39;s BLOG">
-<meta property="og:description" content="Servlet学习笔记_04_Servlet生命周期1. 生命周期简介 什么是生命周期   应用程序中的对象不仅在空间上有层次结构关系，在时间上也会因为处于程序运行过程中的不同阶段而表现出不同状态的不同行为——这就是对象的生命周期 简单描述生命周期，就是对象在容器中从开始创建到销毁的过程   Servlet容器   Servlet对象就是Servlet容器创建的，生命周期方法都是由容器（比如tom">
+<meta property="og:description" content="Servlet学习笔记_02_Servlet开发流程1. 目标 校验注册时，用户名是否被占用。通过客户端向一个Servlet发送请求，携带username，如果用户名是’atguigu’，则向用户端响应 NO， 如果是其他，响应YES  ##2. 开发流程  步骤一：   开发一个Web类型的module    步骤二：   开发一个UserServlet  1234567891011121314">
 <meta property="og:locale" content="zh_CN">
-<meta property="article:published_time" content="2024-03-21T11:32:03.000Z">
-<meta property="article:modified_time" content="2024-03-21T11:38:41.587Z">
+<meta property="og:image" content="http://example.com/2024/03/img/Servlet_02_01.png">
+<meta property="article:published_time" content="2024-03-21T11:28:27.000Z">
+<meta property="article:modified_time" content="2024-03-21T11:38:26.564Z">
 <meta property="article:author" content="YJYdist">
 <meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="http://example.com/2024/03/img/Servlet_02_01.png">
   
   
   
-  <title>Servlet-04 - YJYdist&#39;s BLOG</title>
+  <title>Servlet-02 - YJYdist&#39;s BLOG</title>
 
   <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
 
@@ -196,7 +198,7 @@
       <div class="banner-text text-center fade-in-up">
         <div class="h2">
           
-            <span id="subtitle" data-typed-text="Servlet-04"></span>
+            <span id="subtitle" data-typed-text="Servlet-02"></span>
           
         </div>
 
@@ -207,7 +209,7 @@
     
       <span class="post-meta">
         <i class="iconfont icon-date-fill" aria-hidden="true"></i>
-        <time datetime="2024-03-21 19:32" pubdate>
+        <time datetime="2024-03-21 19:28" pubdate>
           2024年3月21日 晚上
         </time>
       </span>
@@ -219,7 +221,7 @@
       <span class="post-meta mr-2">
         <i class="iconfont icon-chart"></i>
         
-          725 字
+          880 字
         
       </span>
     
@@ -230,7 +232,7 @@
         
         
         
-          7 分钟
+          8 分钟
         
       </span>
     
@@ -267,82 +269,89 @@
       <div class="container nopadding-x-md" id="board-ctn">
         <div id="board">
           <article class="post-content mx-auto">
-            <h1 id="seo-header">Servlet-04</h1>
+            <h1 id="seo-header">Servlet-02</h1>
             
             
               <div class="markdown-body">
                 
-                <h1 id="Servlet学习笔记-04-Servlet生命周期"><a href="#Servlet学习笔记-04-Servlet生命周期" class="headerlink" title="Servlet学习笔记_04_Servlet生命周期"></a>Servlet学习笔记_04_Servlet生命周期</h1><h2 id="1-生命周期简介"><a href="#1-生命周期简介" class="headerlink" title="1. 生命周期简介"></a>1. 生命周期简介</h2><blockquote>
-<p>什么是生命周期</p>
+                <h1 id="Servlet学习笔记-02-Servlet开发流程"><a href="#Servlet学习笔记-02-Servlet开发流程" class="headerlink" title="Servlet学习笔记_02_Servlet开发流程"></a>Servlet学习笔记_02_Servlet开发流程</h1><h2 id="1-目标"><a href="#1-目标" class="headerlink" title="1. 目标"></a>1. 目标</h2><blockquote>
+<p>校验注册时，用户名是否被占用。通过客户端向一个Servlet发送请求，携带username，如果用户名是’atguigu’，则向用户端响应 NO， 如果是其他，响应YES</p>
+</blockquote>
+<p>##2. 开发流程</p>
+<blockquote>
+<p><strong>步骤一：</strong></p>
 </blockquote>
 <ul>
-<li>应用程序中的对象不仅在空间上有层次结构关系，在时间上也会因为处于程序运行过程中的不同阶段而表现出不同状态的不同行为——这就是对象的生命周期</li>
-<li>简单描述生命周期，就是对象在容器中从开始创建到销毁的过程</li>
+<li>开发一个<strong>Web类型</strong>的module</li>
 </ul>
+<hr>
 <blockquote>
-<p>Servlet容器</p>
+<p><strong>步骤二：</strong></p>
 </blockquote>
 <ul>
-<li>Servlet对象就是Servlet容器创建的，生命周期方法都是由容器（比如tomcat）调用的。<u><strong>这一点和我们之前编写的代码有很大不同。</strong>在之后的学习中，<strong>会有越来越多的对象交给容器或框架来创建，越来越多的方法由容器或框架来调用</strong></u>，开发人员要把尽可能多的精力放在业务逻辑的实现上</li>
+<li>开发一个UserServlet</li>
 </ul>
-<blockquote>
-<p>Servlet主要的生命周期的执行特点</p>
-</blockquote>
-<table>
-<thead>
-<tr>
-<th>生命周期</th>
-<th>对应方法</th>
-<th>执行时机</th>
-<th>执行次数</th>
-</tr>
-</thead>
-<tbody><tr>
-<td>构造对象</td>
-<td>构造器</td>
-<td>第一次请求或容器启动</td>
-<td>1</td>
-</tr>
-<tr>
-<td>初始化</td>
-<td>init（）</td>
-<td>构造完毕后</td>
-<td>1</td>
-</tr>
-<tr>
-<td>处理服务</td>
-<td>service（…，…)</td>
-<td>每次请求</td>
-<td>多次</td>
-</tr>
-<tr>
-<td>销毁</td>
-<td>destroy（）</td>
-<td>容器关闭</td>
-<td>1</td>
-</tr>
-</tbody></table>
-<h2 id="2-生命周期测试"><a href="#2-生命周期测试" class="headerlink" title="2. 生命周期测试"></a>2. 生命周期测试</h2><blockquote>
-<p>开发Servlet代码</p>
-</blockquote>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-keyword">package</span> com.atguigu.servlet;<br><span class="hljs-keyword">import</span> jakarta.servlet.ServletException;<br><span class="hljs-keyword">import</span> jakarta.servlet.http.HttpServlet;<br><span class="hljs-keyword">import</span> jakarta.servlet.http.HttpServletRequest;<br><span class="hljs-keyword">import</span> jakarta.servlet.http.HttpServletResponse;<br><br><span class="hljs-keyword">import</span> java.io.IOException;<br><br><span class="hljs-keyword">public</span> <span class="hljs-keyword">class</span> <span class="hljs-title class_">ServletLifeCycle</span>  <span class="hljs-keyword">extends</span> <span class="hljs-title class_">HttpServlet</span> &#123;<br>    <span class="hljs-keyword">public</span> <span class="hljs-title function_">ServletLifeCycle</span><span class="hljs-params">()</span>&#123;<br>        System.out.println(<span class="hljs-string">&quot;构造器&quot;</span>);<br>    &#125;<br><br>    <span class="hljs-meta">@Override</span><br>    <span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title function_">init</span><span class="hljs-params">()</span> <span class="hljs-keyword">throws</span> ServletException &#123;<br>        System.out.println(<span class="hljs-string">&quot;初始化方法&quot;</span>);<br>    &#125;<br><br>    <span class="hljs-meta">@Override</span><br>    <span class="hljs-keyword">protected</span> <span class="hljs-keyword">void</span> <span class="hljs-title function_">service</span><span class="hljs-params">(HttpServletRequest req, HttpServletResponse resp)</span> <span class="hljs-keyword">throws</span> ServletException, IOException &#123;<br>        System.out.println(<span class="hljs-string">&quot;service方法&quot;</span>);<br>    &#125;<br><br>    <span class="hljs-meta">@Override</span><br>    <span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title function_">destroy</span><span class="hljs-params">()</span> &#123;<br>        System.out.println(<span class="hljs-string">&quot;销毁方法&quot;</span>);<br>    &#125;<br>&#125;<br></code></pre></td></tr></table></figure>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-keyword">public</span> <span class="hljs-keyword">class</span> <span class="hljs-title class_">UserServlet</span>  <span class="hljs-keyword">extends</span> <span class="hljs-title class_">HttpServlet</span> &#123;<br>    <span class="hljs-meta">@Override</span><br>    <span class="hljs-keyword">protected</span> <span class="hljs-keyword">void</span> <span class="hljs-title function_">service</span><span class="hljs-params">(HttpServletRequest req, HttpServletResponse resp)</span> <span class="hljs-keyword">throws</span> ServletException, IOException &#123;<br>        <span class="hljs-comment">// 获取请求中的参数</span><br>        <span class="hljs-type">String</span> <span class="hljs-variable">username</span> <span class="hljs-operator">=</span> req.getParameter(<span class="hljs-string">&quot;username&quot;</span>);<br>        <span class="hljs-keyword">if</span>(<span class="hljs-string">&quot;atguigu&quot;</span>.equals(username))&#123;<br>            <span class="hljs-comment">//通过响应对象响应信息</span><br>            resp.getWriter().write(<span class="hljs-string">&quot;NO&quot;</span>);<br>        &#125;<span class="hljs-keyword">else</span>&#123;<br>            resp.getWriter().write(<span class="hljs-string">&quot;YES&quot;</span>);<br>        &#125;<br><br>    &#125;<br>&#125;<br></code></pre></td></tr></table></figure>
 
+<ul>
+<li><p>自定义一个类，要继承<strong>HttpServlet类</strong></p>
+</li>
+<li><p>重写<strong>service</strong>方法，<strong>该方法主要就是用于处理用户请求的服务器方法</strong></p>
+</li>
+<li><p><strong>HttpServletRequest 代表请求对象</strong>，是由<strong>请求报文</strong>经过<strong>tomcat</strong>转换而来的,通过该对象可以获取请求中的信息</p>
+</li>
+<li><p><strong>HttpServletResponse 代表响应对象</strong>，该对象会被<strong>tomcat</strong>转换为<strong>响应的报文</strong>,通过该对象可以设置响应中的信息</p>
+</li>
+<li><p><strong>Servlet对象的生命周期(创建,初始化,处理服务,销毁)是由tomcat管理的,无需我们自己new</strong></p>
+</li>
+<li><p>HttpServletRequest 和 HttpServletResponse 两个对象也是有tomcat负责转换,在调用service方法时传入给我们用的</p>
+</li>
+</ul>
+<hr>
 <blockquote>
-<p>配置Servlet</p>
+<p><strong>步骤三：</strong></p>
 </blockquote>
-<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><code class="hljs xml"><span class="hljs-tag">&lt;<span class="hljs-name">servlet</span>&gt;</span><br>       <span class="hljs-tag">&lt;<span class="hljs-name">servlet-name</span>&gt;</span>servletLifeCycle<span class="hljs-tag">&lt;/<span class="hljs-name">servlet-name</span>&gt;</span><br>       <span class="hljs-tag">&lt;<span class="hljs-name">servlet-class</span>&gt;</span>com.atguigu.servlet.ServletLifeCycle<span class="hljs-tag">&lt;/<span class="hljs-name">servlet-class</span>&gt;</span><br>       <span class="hljs-comment">&lt;!--load-on-startup</span><br><span class="hljs-comment">           如果配置的是正整数则表示容器在启动时就要实例化Servlet,</span><br><span class="hljs-comment">           数字表示的是实例化的顺序</span><br><span class="hljs-comment">       --&gt;</span><br>       <span class="hljs-tag">&lt;<span class="hljs-name">load-on-startup</span>&gt;</span>1<span class="hljs-tag">&lt;/<span class="hljs-name">load-on-startup</span>&gt;</span><br>   <span class="hljs-tag">&lt;/<span class="hljs-name">servlet</span>&gt;</span><br>   <span class="hljs-tag">&lt;<span class="hljs-name">servlet-mapping</span>&gt;</span><br>       <span class="hljs-tag">&lt;<span class="hljs-name">servlet-name</span>&gt;</span>servletLifeCycle<span class="hljs-tag">&lt;/<span class="hljs-name">servlet-name</span>&gt;</span><br>       <span class="hljs-tag">&lt;<span class="hljs-name">url-pattern</span>&gt;</span>/servletLiftCycle<span class="hljs-tag">&lt;/<span class="hljs-name">url-pattern</span>&gt;</span><br>   <span class="hljs-tag">&lt;/<span class="hljs-name">servlet-mapping</span>&gt;</span><br></code></pre></td></tr></table></figure>
+<ul>
+<li>配置web.xml文件，为UserServlet配置请求的映射路径</li>
+</ul>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></td><td class="code"><pre><code class="hljs xml"><span class="hljs-meta">&lt;?xml version=<span class="hljs-string">&quot;1.0&quot;</span> encoding=<span class="hljs-string">&quot;UTF-8&quot;</span>?&gt;</span><br><span class="hljs-tag">&lt;<span class="hljs-name">web-app</span> <span class="hljs-attr">xmlns</span>=<span class="hljs-string">&quot;https://jakarta.ee/xml/ns/jakartaee&quot;</span></span><br><span class="hljs-tag">         <span class="hljs-attr">xmlns:xsi</span>=<span class="hljs-string">&quot;http://www.w3.org/2001/XMLSchema-instance&quot;</span></span><br><span class="hljs-tag">         <span class="hljs-attr">xsi:schemaLocation</span>=<span class="hljs-string">&quot;https://jakarta.ee/xml/ns/jakartaee https://jakarta.ee/xml/ns/jakartaee/web-app_5_0.xsd&quot;</span></span><br><span class="hljs-tag">         <span class="hljs-attr">version</span>=<span class="hljs-string">&quot;5.0&quot;</span>&gt;</span><br><br>    <span class="hljs-tag">&lt;<span class="hljs-name">servlet</span>&gt;</span><br>        <span class="hljs-comment">&lt;!--给UserServlet起一个别名--&gt;</span><br>        <span class="hljs-tag">&lt;<span class="hljs-name">servlet-name</span>&gt;</span>userServlet<span class="hljs-tag">&lt;/<span class="hljs-name">servlet-name</span>&gt;</span><br>        <span class="hljs-tag">&lt;<span class="hljs-name">servlet-class</span>&gt;</span>com.atguigu.servlet.UserServlet<span class="hljs-tag">&lt;/<span class="hljs-name">servlet-class</span>&gt;</span><br>    <span class="hljs-tag">&lt;/<span class="hljs-name">servlet</span>&gt;</span><br><br><br>    <span class="hljs-tag">&lt;<span class="hljs-name">servlet-mapping</span>&gt;</span><br>        <span class="hljs-comment">&lt;!--关联别名和映射路径--&gt;</span><br>        <span class="hljs-tag">&lt;<span class="hljs-name">servlet-name</span>&gt;</span>userServlet<span class="hljs-tag">&lt;/<span class="hljs-name">servlet-name</span>&gt;</span><br>        <span class="hljs-comment">&lt;!--可以为一个Servlet匹配多个不同的映射路径,但是不同的Servlet不能使用相同的url-pattern--&gt;</span><br>        <span class="hljs-tag">&lt;<span class="hljs-name">url-pattern</span>&gt;</span>/userServlet<span class="hljs-tag">&lt;/<span class="hljs-name">url-pattern</span>&gt;</span><br>       <span class="hljs-comment">&lt;!-- &lt;url-pattern&gt;/userServlet2&lt;/url-pattern&gt;--&gt;</span><br>        <span class="hljs-comment">&lt;!--</span><br><span class="hljs-comment">            /        表示通配所有资源,不包括jsp文件</span><br><span class="hljs-comment">            /*       表示通配所有资源,包括jsp文件</span><br><span class="hljs-comment">            /a/*     匹配所有以a前缀的映射路径</span><br><span class="hljs-comment">            *.action 匹配所有以action为后缀的映射路径</span><br><span class="hljs-comment">        --&gt;</span><br>       <span class="hljs-comment">&lt;!-- &lt;url-pattern&gt;/*&lt;/url-pattern&gt;--&gt;</span><br>    <span class="hljs-tag">&lt;/<span class="hljs-name">servlet-mapping</span>&gt;</span><br><br><span class="hljs-tag">&lt;/<span class="hljs-name">web-app</span>&gt;</span><br></code></pre></td></tr></table></figure>
 
+<ul>
+<li>Servlet并不是文件系统中实际存在的文件或者目录,所以为了能够请求到该资源,我们需要为其配置映射路径</li>
+<li>servlet的请求映射路径配置在web.xml中</li>
+<li>servlet-name作为servlet的别名,可以自己随意定义,见名知意就好</li>
+<li>url-pattern标签用于定义Servlet的请求映射路径</li>
+<li>一个servlet可以对应多个不同的url-pattern</li>
+<li>多个servlet不能使用相同的url-pattern</li>
+<li>url-pattern中可以使用一些通配写法<ul>
+<li>&#x2F;        表示通配所有资源,不包括jsp文件</li>
+<li>&#x2F;*      表示通配所有资源,包括jsp文件</li>
+<li>&#x2F;a&#x2F;*     匹配所有以a前缀的映射路径</li>
+<li>*.action 匹配所有以action为后缀的映射路径</li>
+</ul>
+</li>
+</ul>
+<hr>
 <blockquote>
-<p>Servlet测试</p>
+<p><strong>步骤四：</strong></p>
 </blockquote>
-<p>… … … … … … … … … … … …（按之前的步骤运行就可以了:smile:）</p>
-<h2 id="3-生命周期总结"><a href="#3-生命周期总结" class="headerlink" title="3. 生命周期总结"></a>3. 生命周期总结</h2><ol>
-<li>通过生命周期测试我们发现Servlet对象在容器中是单例的</li>
-<li>容器是可以处理并发的用户请求的，每个请求在容器中都会开启一个线程</li>
-<li>多个线程可能会使用相同的Servlet对象，<u>所以在Servlet中，我们不要轻易定义一些容易经常发生修改的成员变量</u></li>
-<li>load-on-startup中定义的正整数表示实例化顺序，如果数字重复了，容器会自行解决实例化顺序问题，但应该避免重复（自定义的数字应该从6开始，<u>因为1~5已经被tomcat的默认配置占用了</u>）</li>
-<li><strong>tomcat容器中,已经定义了一些随系统启动实例化的servlet,我们自定义的servlet的load-on-startup尽量不要占用数字1-5</strong></li>
-</ol>
+<ul>
+<li>开发一个form表单，向Servlet发送一个GET请求并携带username参数</li>
+</ul>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><code class="hljs html"><span class="hljs-meta">&lt;!DOCTYPE <span class="hljs-keyword">html</span>&gt;</span><br><span class="hljs-tag">&lt;<span class="hljs-name">html</span> <span class="hljs-attr">lang</span>=<span class="hljs-string">&quot;en&quot;</span>&gt;</span><br><span class="hljs-tag">&lt;<span class="hljs-name">head</span>&gt;</span><br>    <span class="hljs-tag">&lt;<span class="hljs-name">meta</span> <span class="hljs-attr">charset</span>=<span class="hljs-string">&quot;UTF-8&quot;</span>&gt;</span><br>    <span class="hljs-tag">&lt;<span class="hljs-name">title</span>&gt;</span>Title<span class="hljs-tag">&lt;/<span class="hljs-name">title</span>&gt;</span><br><span class="hljs-tag">&lt;/<span class="hljs-name">head</span>&gt;</span><br><span class="hljs-tag">&lt;<span class="hljs-name">body</span>&gt;</span><br>    <span class="hljs-tag">&lt;<span class="hljs-name">form</span> <span class="hljs-attr">action</span>=<span class="hljs-string">&quot;userServlet&quot;</span>&gt;</span><br>        请输入用户名:<span class="hljs-tag">&lt;<span class="hljs-name">input</span> <span class="hljs-attr">type</span>=<span class="hljs-string">&quot;text&quot;</span> <span class="hljs-attr">name</span>=<span class="hljs-string">&quot;username&quot;</span> /&gt;</span> <span class="hljs-tag">&lt;<span class="hljs-name">br</span>&gt;</span><br>        <span class="hljs-tag">&lt;<span class="hljs-name">input</span> <span class="hljs-attr">type</span>=<span class="hljs-string">&quot;submit&quot;</span> <span class="hljs-attr">value</span>=<span class="hljs-string">&quot;校验&quot;</span>&gt;</span><br>    <span class="hljs-tag">&lt;/<span class="hljs-name">form</span>&gt;</span><br><span class="hljs-tag">&lt;/<span class="hljs-name">body</span>&gt;</span><br><span class="hljs-tag">&lt;/<span class="hljs-name">html</span>&gt;</span><br></code></pre></td></tr></table></figure>
+
+<hr>
+<blockquote>
+<p><strong>步骤五：</strong></p>
+</blockquote>
+<ul>
+<li>启动项目，访问index.html，提交表单</li>
+</ul>
+<hr>
+<blockquote>
+<p>映射关系图</p>
+</blockquote>
+<p><img src="/2024/03/21/Servlet-02/../../img/Servlet_02_01.png" srcset="/img/loading.gif" lazyload></p>
 
                 
               </div>
@@ -360,8 +369,8 @@
 
   <div class="license-box my-3">
     <div class="license-title">
-      <div>Servlet-04</div>
-      <div>http://example.com/2024/03/21/Servlet-04/</div>
+      <div>Servlet-02</div>
+      <div>http://example.com/2024/03/21/Servlet-02/</div>
     </div>
     <div class="license-meta">
       
@@ -405,9 +414,9 @@
                   <article class="post-prev col-6">
                     
                     
-                      <a href="/2024/03/21/Servlet-05/" title="Servlet-05">
+                      <a href="/2024/03/21/Servlet-03/" title="Servlet-03">
                         <i class="iconfont icon-arrowleft"></i>
-                        <span class="hidden-mobile">Servlet-05</span>
+                        <span class="hidden-mobile">Servlet-03</span>
                         <span class="visible-mobile">上一篇</span>
                       </a>
                     
@@ -415,8 +424,8 @@
                   <article class="post-next col-6">
                     
                     
-                      <a href="/2024/03/21/Servlet-03/" title="Servlet-03">
-                        <span class="hidden-mobile">Servlet-03</span>
+                      <a href="/2024/03/21/Servlet-01/" title="Servlet_01">
+                        <span class="hidden-mobile">Servlet_01</span>
                         <span class="visible-mobile">下一篇</span>
                         <i class="iconfont icon-arrowright"></i>
                       </a>
