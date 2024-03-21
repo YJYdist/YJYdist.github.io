@@ -3,5 +3,18 @@
   
   
   
+  <entry>
+    <title>Servlet_01</title>
+    <link href="/2024/03/21/Servlet-01/"/>
+    <url>/2024/03/21/Servlet-01/</url>
+    
+    <content type="html"><![CDATA[<h1 id="Servlet学习笔记-01-Servlet简介"><a href="#Servlet学习笔记-01-Servlet简介" class="headerlink" title="Servlet学习笔记_01_Servlet简介"></a>Servlet学习笔记_01_Servlet简介</h1><hr><h2 id="1-动态资源与静态资源"><a href="#1-动态资源与静态资源" class="headerlink" title="1.动态资源与静态资源"></a>1.动态资源与静态资源</h2><blockquote><p>静态资源 </p></blockquote><ul><li>无需再程序运行时通过代码运行生成的的资源，在程序运行之前就已经写好的资源。例如：html，css，js，img，音频文件和视频文件</li></ul><blockquote><p>动态资源</p></blockquote><ul><li>需要在程序运行时通过代码运行生成的资源在程序运行之前无法确定的数据，运行时动态生成，例如：Servlet，Thymeleaf … …</li><li>动态资源指的不是视图上的动画效果或者是简单的人机交互效果</li></ul><blockquote><p>生活举例</p></blockquote><ul><li>去蛋糕店买蛋糕<ul><li>直接买柜台上已经做好的 ： 静态资源</li><li>和柜员要求后现场制作的 ： 动态资源</li></ul></li></ul><h2 id="2-Servlet简介"><a href="#2-Servlet简介" class="headerlink" title="2.Servlet简介"></a>2.Servlet简介</h2><blockquote><p>Servlet （server applet） 是运行在服务端（tomcat）的Java小程序，是sun公司提供的一套定义动态资源规范；从代码层面上来讲Servlet就是一个接口</p></blockquote><ul><li>用来接收、处理客户端请求、响应给浏览器的动态资源。在整个Web应用中，Servlet主要负责接受处理请求、协同调度功能以及响应数据。我们可以把Servlet称为Web应用中的<strong>控制器</strong></li><li>不是所有的Java类都可以处理来自客户端请求，能够处理客户端请求并做出响应的一套技术标准就是Servlet</li><li>Servlet是运行在服务端的，所以Servlet必须在Web项目中开发并且在tomcat这样的服务容器中运行</li></ul><p><img src="/Servlet-01/Servlet_01_01.png" alt="示例图"></p><p>​</p>]]></content>
+    
+    
+    
+  </entry>
+  
+  
+  
   
 </search>
